@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Property CRM</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .flex-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        footer {
+            margin-top: auto;
+        }
+        .card {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .icon {
+            font-size: 2rem;
+            color: #6366F1;
+        }
+
+        .loader {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #6366F1;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+<div id="spinner" class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 hidden">
+    <div class="loader"></div>
+</div>
+
+<!-- Main Content Wrapper -->
+<div id="main-content" class="hidden">
+    <!-- Flex container to manage the layout -->
+    <div class="flex-container">
+        <!-- Include Navbar -->
+        <div id="navbar"></div>
+
+        <!-- Dashboard Content -->
+        <div class="container mx-auto mt-12 flex-grow">
+            <!-- Main Content -->
+            <div class="flex-1 p-6">
+                <h1 class="text-3xl font-semibold mb-6">Welcome to Your Dashboard</h1>
+
+                <!-- Dashboard Cards -->
+                <div class="grid grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold">Total Employees</h2>
+                        <p class="text-2xl mt-4">150</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold">New Hires</h2>
+                        <p class="text-2xl mt-4">20</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold">Departments</h2>
+                        <p class="text-2xl mt-4">10</p>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-2 gap-6">
+                    <!-- Pie Chart -->
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4">Employees by Department</h2>
+                        <canvas id="pieChart"></canvas>
+                    </div>
+
+                    <!-- Bar Chart -->
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4">Monthly Hires</h2>
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Include the Footer -->
+        <footer id="footer"></footer>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Show loading spinner and hide main content initially
+    document.addEventListener("DOMContentLoaded", function() {
+        const spinner = document.getElementById('spinner');
+        const mainContent = document.getElementById('main-content');
+        
+        // Simulate loading (You can replace this with actual loading logic)
+        setTimeout(() => {
+            spinner.classList.add('hidden');
+            mainContent.classList.remove('hidden');
+        }, 1000);
+    });
+
+    // Pie Chart Data
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    const pieChart = new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+            labels: ['HR', 'Sales', 'IT', 'Marketing', 'Finance'],
+            datasets: [{
+                data: [30, 50, 70, 20, 40],
+                backgroundColor: ['#3498db', '#1abc9c', '#f39c12', '#e74c3c', '#8e44ad'],
+            }]
+        }
+    });
+
+    // Bar Chart Data
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    const barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+            datasets: [{
+                label: 'Hires',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: '#3498db',
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Load Navbar and Footer dynamically
+    fetch('navbar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar').innerHTML = data;
+        });
+
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+</script>
+
+<script src="navbar.js"></script>
+</body>
+</html>

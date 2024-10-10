@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Employee Letters</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+
+<body class="bg-white leading-relaxed text-gray-800">
+    <!-- Include Navbar -->
+    <div id="navbar"></div>
+
+    <div class="w-full mx-auto my-10 bg-white shadow-xl rounded-xl p-8">
+        <h1 class="text-3xl font-bold text-center text-indigo-700 mb-6">Generate Employee Letters</h1>
+
+        <!-- Form to input employee details and select letter type -->
+        <form id="letterForm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Employee Name -->
+                <div>
+                    <label for="employeeName" class="block text-sm font-medium text-gray-700">Employee Name</label>
+                    <input type="text" id="employeeName" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
+                </div>
+
+                <!-- Designation -->
+                <div>
+                    <label for="designation" class="block text-sm font-medium text-gray-700">Designation</label>
+                    <input type="text" id="designation" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
+                </div>
+
+                <!-- Joining Date -->
+                <div>
+                    <label for="joiningDate" class="block text-sm font-medium text-gray-700">Joining Date</label>
+                    <input type="date" id="joiningDate" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <!-- Letter Type (Offer/Relieving) -->
+                <div>
+                    <label for="letterType" class="block text-sm font-medium text-gray-700">Letter Type</label>
+                    <select id="letterType" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="offer">Offer Letter</option>
+                        <option value="relieving">Relieving Letter</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Submit button -->
+            <div class="mt-6 text-center">
+                <button type="button" onclick="generateLetter()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">Generate Letter</button>
+            </div>
+        </form>
+
+        <!-- Display the generated letter -->
+        <div id="letterOutput" class="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg"></div>
+    </div>
+
+    <script>
+        function generateLetter() {
+            // Get form values
+            const name = document.getElementById("employeeName").value;
+            const designation = document.getElementById("designation").value;
+            const joiningDate = document.getElementById("joiningDate").value;
+            const letterType = document.getElementById("letterType").value;
+
+            let letterContent = '';
+
+            if (letterType === 'offer') {
+                letterContent = `
+                    <h2 class="text-xl font-bold mb-4">Offer Letter</h2>
+                    <p>Dear ${name},</p>
+                    <p>We are pleased to offer you the position of <strong>${designation}</strong> at our company. Your joining date will be <strong>${joiningDate}</strong>.</p>
+                    <p>We look forward to working with you.</p>
+                    <p>Sincerely,</p>
+                    <p>HR Department</p>
+                `;
+            } else if (letterType === 'relieving') {
+                letterContent = `
+                    <h2 class="text-xl font-bold mb-4">Relieving Letter</h2>
+                    <p>Dear ${name},</p>
+                    <p>This is to confirm that you have been relieved from the position of <strong>${designation}</strong> effective from <strong>${joiningDate}</strong>.</p>
+                    <p>We wish you all the best in your future endeavors.</p>
+                    <p>Sincerely,</p>
+                    <p>HR Department</p>
+                `;
+            }
+
+            // Display the generated letter content
+            document.getElementById("letterOutput").innerHTML = letterContent;
+
+            // Generate PDF using jsPDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text(letterContent.replace(/<[^>]*>/g, ''), 10, 10); // Remove HTML tags for PDF
+            doc.save(`${name}_${letterType}_letter.pdf`);
+        }
+    </script>
+
+</body>
+
+</html>

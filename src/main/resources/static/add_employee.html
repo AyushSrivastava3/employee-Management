@@ -1,287 +1,257 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Employee</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-   html, body {
-  height: 100%; /* Ensure full height */
-  margin: 0; /* Remove default margins */
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Form</title>
+    <style>
 
-body {
-  display: flex;
-  flex-direction: column; /* Make the body a flex container */
-}
-
-.container {
-  flex-grow: 1; /* Allow the content to expand and fill available space */
-}
-
-footer {
-  flex-shrink: 0; /* Prevent the footer from shrinking */
-}
-
-  </style>
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body  class="bg-gray-100">
+<div id="navbar"></div>
+<div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+    <form id="addEmployeeForm">
+    <h1 class="text-3xl font-bold text-center mb-6">Employee Details Form</h1>
 
-<body class="bg-gray-100">
-    <!-- Include Navbar -->
-    <div id="navbar"></div>
-  <div class="container mx-auto p-6">
-    
-    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
-      <h1 class="text-2xl font-bold text-center mb-6">Add Employee</h1>
-
-      <form id="addEmployeeForm">
-        <!-- Step 1: Personal Information -->
-        <div id="step-1" class="step">
-          <h2 class="text-xl font-semibold mb-4">Step 1: Personal Information</h2>
-
-          <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div class="form-group">
-              <label for="firstName" class="block text-sm font-semibold text-gray-700">First Name</label>
-              <input type="text" id="firstName" name="firstName" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-            </div>
-
-            <div class="form-group">
-              <label for="lastName" class="block text-sm font-semibold text-gray-700">Last Name</label>
-              <input type="text" id="lastName" name="lastName" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-            </div>
-
-            <div class="form-group">
-              <label for="mobileNumber" class="block text-sm font-semibold text-gray-700">Mobile Number</label>
-              <input type="text" id="mobileNumber" name="mobileNumber" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-            </div>
-
-            <div class="form-group">
-              <label for="alternateMobileNumber" class="block text-sm font-semibold text-gray-700">Alternate Mobile Number</label>
-              <input type="text" id="alternateMobileNumber" name="alternateMobileNumber" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-            </div>
-
-            <div class="form-group">
-              <label for="personalEmail" class="block text-sm font-semibold text-gray-700">Personal Email</label>
-              <input type="email" id="personalEmail" name="personalEmail" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-            </div>
-
-            <div class="form-group">
-              <label for="professionalEmail" class="block text-sm font-semibold text-gray-700">Professional Email</label>
-              <input type="email" id="professionalEmail" name="professionalEmail" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-            </div>
-
-            <div class="form-group">
-              <label for="dateOfJoining" class="block text-sm font-semibold text-gray-700">Date of Joining</label>
-              <input type="date" id="dateOfJoining" name="dateOfJoining" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-            </div>
-          </div>
-
-          <div class="mt-6 flex justify-between">
-            <button type="button" id="nextStep1" class="bg-blue-500 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">Next</button>
-          </div>
+    <!-- Section 1: Personal Information -->
+    <div class="mb-4">
+        <div class="flex justify-between items-center bg-gradient-to-r from-purple-700 to-indigo-600 text-white py-3 px-4 rounded-t cursor-pointer" onclick="toggleSection('section1')">
+            <h2 class="text-lg">Personal Information</h2>
+            <span id="toggleIcon1" class="text-xl font-bold">+</span>
         </div>
-
-        <!-- Step 2: Job & Employment Details -->
-        <div id="step-2" class="step hidden">
-          <h2 class="text-xl font-semibold mb-4">Step 2: Job & Employment Details</h2>
-
-          <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div class="form-group">
-              <label for="jobTitle" class="block text-sm font-semibold text-gray-700">Job Title</label>
-              <input type="text" id="jobTitle" name="jobTitle" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+        <div id="section1" class="bg-gray-100 p-4 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="firstName" class="block">First Name</label>
+                    <input type="text" id="firstName" class="w-full p-2 border rounded " required>
+                </div>
+                <div>
+                    <label for="lastName" class="block">Last Name</label>
+                    <input type="text" id="lastName" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="mobileNumber" class="block">Mobile Number</label>
+                    <input type="text" id="mobileNumber" class="w-full p-2 border rounded" required>
+                </div>
+                <div>
+                    <label for="alternateMobileNumber" class="block">Alternate Mobile Number</label>
+                    <input type="text" id="alternateMobileNumber" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="personalEmail" class="block">Personal Email</label>
+                    <input type="email" id="personalEmail" class="w-full p-2 border rounded" required>
+                </div>
+                <div>
+                    <label for="professionalEmail" class="block">Professional Email</label>
+                    <input type="email" id="professionalEmail" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="dateOfJoining" class="block">Date of Joining</label>
+                    <input type="date" id="dateOfJoining" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="dateOfBirth" class="block">Date of Birth</label>
+                    <input type="date" id="dateOfBirth" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="gender" class="block">Gender</label>
+                    <input type="text" id="gender" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="homeAddress" class="block">Home Address</label>
+                    <input type="text" id="homeAddress" class="w-full p-2 border rounded">
+                </div>
             </div>
-
-            <div class="form-group">
-              <label for="department" class="block text-sm font-semibold text-gray-700">Department</label>
-              <input type="text" id="department" name="department" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-            </div>
-
-            <div class="form-group">
-              <label for="managerName" class="block text-sm font-semibold text-gray-700">Manager Name</label>
-              <input type="text" id="managerName" name="managerName" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-            </div>
-
-            <div class="form-group">
-              <label for="employmentType" class="block text-sm font-semibold text-gray-700">Employment Type</label>
-              <select id="employmentType" name="employmentType" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Contract">Contract</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="employeeStatus" class="block text-sm font-semibold text-gray-700">Employee Status</label>
-              <input type="text" id="employeeStatus" name="employeeStatus" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-            </div>
-
-            <div class="form-group">
-              <label for="workLocation" class="block text-sm font-semibold text-gray-700">Work Location</label>
-              <input type="text" id="workLocation" name="workLocation" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-            </div>
-          </div>
-
-          <div class="mt-6 flex justify-between">
-            <button type="button" id="prevStep1" class="bg-gray-500 text-white py-2 px-6 rounded-lg font-semibold hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">Previous</button>
-            <button type="button" id="nextStep2" class="bg-blue-500 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">Next</button>
-          </div>
-        </div>
-
-        <!-- Step 3: Payroll & Benefits -->
-       <!-- Step 3: Payroll & Benefits -->
-<div id="step-3" class="step hidden">
-    <h2 class="text-xl font-semibold mb-4">Step 3: Payroll & Benefits</h2>
-
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div class="form-group">
-            <label for="salaryPerAnnum" class="block text-sm font-semibold text-gray-700">Salary Per Annum</label>
-            <input type="number" id="salaryPerAnnum" name="salaryPerAnnum" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-        </div>
-
-        <div class="form-group">
-            <label for="insurancePlanDetails" class="block text-sm font-semibold text-gray-700">Insurance Plan Details</label>
-            <input type="text" id="insurancePlanDetails" name="insurancePlanDetails" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-
-        <div class="form-group">
-            <label for="bonusDetails" class="block text-sm font-semibold text-gray-700">Bonus Details</label>
-            <input type="text" id="bonusDetails" name="bonusDetails" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-
-        <div class="form-group">
-            <label for="benefits" class="block text-sm font-semibold text-gray-700">Benefits</label>
-            <input type="text" id="benefits" name="benefits" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
         </div>
     </div>
 
+    <!-- Section 2: Job Details -->
+    <div class="mb-4">
+        <div class="flex justify-between items-center bg-gradient-to-r from-purple-700 to-indigo-600 text-white py-3 px-4 rounded-t cursor-pointer" onclick="toggleSection('section2')">
+            <h2 class="text-lg">Job Details</h2>
+            <span id="toggleIcon2" class="text-xl font-bold">+</span>
+        </div>
+        <div id="section2" class="bg-gray-100 p-4 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="jobTitle" class="block">Job Title</label>
+                    <input type="text" id="jobTitle" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="department" class="block">Department</label>
+                    <input type="text" id="department" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="managerName" class="block">Manager Name</label>
+                    <input type="text" id="managerName" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="employmentType" class="block">Employment Type</label>
+                    <input type="text" id="employmentType" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="employeeStatus" class="block">Employee Status</label>
+                    <input type="text" id="employeeStatus" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="workLocation" class="block">Work Location</label>
+                    <input type="text" id="workLocation" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="currentLocation" class="block">Current Location</label>
+                    <input type="text" id="currentLocation" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="employeeGrade" class="block">Employee Grade</label>
+                    <input type="text" id="employeeGrade" class="w-full p-2 border rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3: Payroll & Salary Information -->
+    <div class="mb-4">
+        <div class="flex justify-between items-center bg-gradient-to-r from-purple-700 to-indigo-600 text-white py-3 px-4 rounded-t cursor-pointer" onclick="toggleSection('section3')">
+            <h2 class="text-lg">Payroll & Salary Information</h2>
+            <span id="toggleIcon3" class="text-xl font-bold">+</span>
+        </div>
+        <div id="section3" class="bg-gray-100 p-4 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="payroll" class="block">Payroll</label>
+                    <input type="text" id="payroll" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="bankAccountDetails" class="block">Bank Account Details</label>
+                    <input type="text" id="bankAccountDetails" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="payDate" class="block">Pay Date</label>
+                    <input type="date" id="payDate" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="taxInformation" class="block">Tax Information</label>
+                    <input type="text" id="taxInformation" class="w-full p-2 border rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4: Nominee Information -->
+    <div class="mb-4">
+        <div class="flex justify-between items-center bg-gradient-to-r from-purple-700 to-indigo-600 text-white py-3 px-4 rounded-t cursor-pointer" onclick="toggleSection('section4')">
+            <h2 class="text-lg">Nominee Information</h2>
+            <span id="toggleIcon4" class="text-xl font-bold">+</span>
+        </div>
+        <div id="section4" class="bg-gray-100 p-4 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="nomineeName" class="block">Nominee Name</label>
+                    <input type="text" id="nomineeName" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="nomineeBankAccountDetails" class="block">Nominee Bank Account Details</label>
+                    <input type="text" id="nomineeBankAccountDetails" class="w-full p-2 border rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 5: Insurance & Benefits -->
+    <div class="mb-4">
+        <div class="flex justify-between items-center bg-gradient-to-r from-purple-700 to-indigo-600 text-white py-3 px-4 rounded-t cursor-pointer" onclick="toggleSection('section5')">
+            <h2 class="text-lg">Insurance & Benefits</h2>
+            <span id="toggleIcon5" class="text-xl font-bold">+</span>
+        </div>
+        <div id="section5" class="bg-gray-100 p-4 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="insurancePlanDetails" class="block">Insurance Plan Details</label>
+                    <input type="text" id="insurancePlanDetails" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="leavesBalance" class="block">Leaves Balance</label>
+                    <input type="number" id="leavesBalance" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="otherBenefits" class="block">Other Benefits</label>
+                    <input type="text" id="otherBenefits" class="w-full p-2 border rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 6: Work Hours & Attendance -->
+    <div class="mb-4">
+        <div class="flex justify-between items-center bg-gradient-to-r from-purple-700 to-indigo-600 text-white py-3 px-4 rounded-t cursor-pointer" onclick="toggleSection('section6')">
+            <h2 class="text-lg">Work Hours & Attendance</h2>
+            <span id="toggleIcon6" class="text-xl font-bold">+</span>
+        </div>
+        <div id="section6" class="bg-gray-100 p-4 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="workHours" class="block">Work Hours</label>
+                    <input type="text" id="workHours" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="leaveRequests" class="block">Leave Requests</label>
+                    <input type="text" id="leaveRequests" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="attendanceTracking" class="block">Attendance Tracking</label>
+                    <input type="text" id="attendanceTracking" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="timesheets" class="block">Timesheets</label>
+                    <input type="text" id="timesheets" class="w-full p-2 border rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 7: Laptop Details -->
+    <div class="mb-4">
+        <div class="flex justify-between items-center bg-gradient-to-r from-purple-700 to-indigo-600 text-white py-3 px-4 rounded-t cursor-pointer" onclick="toggleSection('section7')">
+            <h2 class="text-lg">Laptop Details</h2>
+            <span id="toggleIcon7" class="text-xl font-bold">+</span>
+        </div>
+        <div id="section7" class="bg-gray-100 p-4 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="laptopDetails" class="block">Laptop Details</label>
+                    <input type="text" id="laptopDetails" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="laptopDeliveryAddress" class="block">Laptop Delivery Address</label>
+                    <input type="text" id="laptopDeliveryAddress" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="laptopReceivedDate" class="block">Laptop Received Date</label>
+                    <input type="date" id="laptopReceivedDate" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="laptopBills" class="block">Laptop Bills</label>
+                    <input type="text" id="laptopBills" class="w-full p-2 border rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Button -->
     <div class="mt-6 flex justify-between">
-        <button type="button" id="prevStep2" class="bg-gray-500 text-white py-2 px-6 rounded-lg font-semibold hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">Previous</button>
-        <button type="button" id="nextStep3" class="bg-blue-500 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">Next</button>
+
+                <button type="submit" id="submitBtn" class="bg-indigo-800 text-white py-2 px-6 rounded-lg mx-auto ">Submit</button>
     </div>
+    </form>
 </div>
+<footer id="footer"></footer>
 
-<!-- Step 4: Nominee Information -->
-<div id="step-4" class="step hidden">
-    <h2 class="text-xl font-semibold mb-4">Step 4: Nominee Information</h2>
+        <script>
 
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div class="form-group">
-            <label for="nomineeName" class="block text-sm font-semibold text-gray-700">Nominee Name</label>
-            <input type="text" id="nomineeName" name="nomineeName" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-
-        <div class="form-group">
-            <label for="nomineeBankAccountDetails" class="block text-sm font-semibold text-gray-700">Nominee Bank Account Details</label>
-            <input type="text" id="nomineeBankAccountDetails" name="nomineeBankAccountDetails" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-    </div>
-
-    <div class="mt-6 flex justify-between">
-        <button type="button" id="prevStep3" class="bg-gray-300 text-gray-700 py-2 px-6 rounded-lg">Previous</button>
-        <button type="button" id="nextStep4" class="bg-blue-500 text-white py-2 px-6 rounded-lg">Next</button>
-    </div>
-</div>
-
-<!-- Step 5: Insurance, Leaves, and Benefits -->
-<div id="step-5" class="step hidden">
-    <h2 class="text-xl font-semibold mb-4">Step 5: Insurance, Leaves, and Benefits</h2>
-
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div class="form-group">
-            <label for="insurancePlanDetails" class="block text-sm font-semibold text-gray-700">Insurance Plan Details</label>
-            <input type="text" id="insurancePlanDetails" name="insurancePlanDetails" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-
-        <div class="form-group">
-            <label for="leavesBalance" class="block text-sm font-semibold text-gray-700">Leaves Balance</label>
-            <input type="number" id="leavesBalance" name="leavesBalance" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-
-        <div class="form-group">
-            <label for="otherBenefits" class="block text-sm font-semibold text-gray-700">Other Benefits</label>
-            <input type="text" id="otherBenefits" name="otherBenefits" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-    </div>
-
-    <div class="mt-6 flex justify-between">
-        <button type="button" id="prevStep4" class="bg-gray-300 text-gray-700 py-2 px-6 rounded-lg">Previous</button>
-        <button type="button" id="nextStep5" class="bg-blue-500 text-white py-2 px-6 rounded-lg">Next</button>
-    </div>
-</div>
-
-<!-- Step 6: Work Hours, Leave Requests, Attendance, Timesheets -->
-<div id="step-6" class="step hidden">
-    <h2 class="text-xl font-semibold mb-4">Step 6: Work Hours, Leave Requests, Attendance, Timesheets</h2>
-
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div class="form-group">
-            <label for="workHours" class="block text-sm font-semibold text-gray-700">Work Hours</label>
-            <input type="text" id="workHours" name="workHours" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-
-        <div class="form-group">
-            <label for="leaveRequests" class="block text-sm font-semibold text-gray-700">Leave Requests</label>
-            <input type="text" id="leaveRequests" name="leaveRequests" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-
-        <div class="form-group">
-            <label for="attendanceTracking" class="block text-sm font-semibold text-gray-700">Attendance Tracking</label>
-            <input type="text" id="attendanceTracking" name="attendanceTracking" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-
-        <div class="form-group">
-            <label for="timesheets" class="block text-sm font-semibold text-gray-700">Timesheets</label>
-            <input type="text" id="timesheets" name="timesheets" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-    </div>
-
-    <div class="mt-6 flex justify-between">
-        <button type="button" id="prevStep5" class="bg-gray-300 text-gray-700 py-2 px-6 rounded-lg">Previous</button>
-        <button type="button" id="nextStep6" class="bg-blue-500 text-white py-2 px-6 rounded-lg">Next</button>
-    </div>
-</div>
-
-<!-- Step 7: Laptop Details -->
-<div id="step-7" class="step hidden">
-    <h2 class="text-xl font-semibold mb-4">Step 7: Laptop Details</h2>
-
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div class="form-group">
-            <label for="laptopDetails" class="block text-sm font-semibold text-gray-700">Laptop Details</label>
-            <input type="text" id="laptopDetails" name="laptopDetails" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-
-        <div class="form-group">
-            <label for="laptopDeliveryAddress" class="block text-sm font-semibold text-gray-700">Laptop Delivery Address</label>
-            <input type="text" id="laptopDeliveryAddress" name="laptopDeliveryAddress" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-
-        <div class="form-group">
-            <label for="laptopReceivedDate" class="block text-sm font-semibold text-gray-700">Laptop Received Date</label>
-            <input type="date" id="laptopReceivedDate" name="laptopReceivedDate" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg">
-        </div>
-    </div>
-
-    <div class="mt-6 flex justify-between">
-        <button type="button" id="prevStep6" class="bg-gray-300 text-gray-700 py-2 px-6 rounded-lg">Previous</button>
-        <button type="submit" id="submitBtn" class="bg-green-500 text-white py-2 px-6 rounded-lg">Submit</button>
-    </div>
-</div>
-
-
-</div>
-
-      </form>
-     
-    </div>
-     <!-- Include the Footer -->
-     <footer id="footer"></footer>
-  </div>
-
-  <script>
-
-fetch('navbar.html')
+            fetch('navbar.html')
         .then(response => response.text())
         .then(data => {
             document.getElementById('navbar').innerHTML = data;
@@ -292,87 +262,14 @@ fetch('navbar.html')
         .then(data => {
             document.getElementById('footer').innerHTML = data;
         });
+            function toggleSection(sectionId) {
+                const section = document.getElementById(sectionId);
+                const toggleIcon = document.getElementById(`toggleIcon${sectionId.replace('section', '')}`);
+                section.classList.toggle('hidden');
+                toggleIcon.innerText = section.classList.contains('hidden') ? '+' : '-';
+            }
 
-    const steps = document.querySelectorAll('.step');
-const nextStep1 = document.getElementById('nextStep1');
-const nextStep2 = document.getElementById('nextStep2');
-const nextStep3 = document.getElementById('nextStep3');
-const nextStep4 = document.getElementById('nextStep4');
-const nextStep5 = document.getElementById('nextStep5');
-const nextStep6 = document.getElementById('nextStep6');
-
-const prevStep1 = document.getElementById('prevStep1');
-const prevStep2 = document.getElementById('prevStep2');
-const prevStep3 = document.getElementById('prevStep3');
-const prevStep4 = document.getElementById('prevStep4');
-const prevStep5 = document.getElementById('prevStep5');
-const prevStep6 = document.getElementById('prevStep6');
-
-// Show the next step and hide the current step
-nextStep1.addEventListener('click', () => {
-  document.getElementById('step-1').classList.add('hidden');
-  document.getElementById('step-2').classList.remove('hidden');
-});
-
-nextStep2.addEventListener('click', () => {
-  document.getElementById('step-2').classList.add('hidden');
-  document.getElementById('step-3').classList.remove('hidden');
-});
-
-nextStep3.addEventListener('click', () => {
-  document.getElementById('step-3').classList.add('hidden');
-  document.getElementById('step-4').classList.remove('hidden');
-});
-
-nextStep4.addEventListener('click', () => {
-  document.getElementById('step-4').classList.add('hidden');
-  document.getElementById('step-5').classList.remove('hidden');
-});
-
-nextStep5.addEventListener('click', () => {
-  document.getElementById('step-5').classList.add('hidden');
-  document.getElementById('step-6').classList.remove('hidden');
-});
-
-nextStep6.addEventListener('click', () => {
-  document.getElementById('step-6').classList.add('hidden');
-  document.getElementById('step-7').classList.remove('hidden');
-});
-
-// Show the previous step and hide the current step
-prevStep1.addEventListener('click', () => {
-  document.getElementById('step-2').classList.add('hidden');
-  document.getElementById('step-1').classList.remove('hidden');
-});
-
-prevStep2.addEventListener('click', () => {
-  document.getElementById('step-3').classList.add('hidden');
-  document.getElementById('step-2').classList.remove('hidden');
-});
-
-prevStep3.addEventListener('click', () => {
-  document.getElementById('step-4').classList.add('hidden');
-  document.getElementById('step-3').classList.remove('hidden');
-});
-
-prevStep4.addEventListener('click', () => {
-  document.getElementById('step-5').classList.add('hidden');
-  document.getElementById('step-4').classList.remove('hidden');
-});
-
-prevStep5.addEventListener('click', () => {
-  document.getElementById('step-6').classList.add('hidden');
-  document.getElementById('step-5').classList.remove('hidden');
-});
-
-prevStep6.addEventListener('click', () => {
-  document.getElementById('step-7').classList.add('hidden');
-  document.getElementById('step-6').classList.remove('hidden');
-});
-
-
-    // Function to handle form submission
-    async function submitEmployeeData(event) {
+               async function submitEmployeeData(event) {
     event.preventDefault(); // Prevent default form submission
 
     const employeeData = {
@@ -444,8 +341,8 @@ prevStep6.addEventListener('click', () => {
 
   // Attach the submit event listener to the form
   document.getElementById('addEmployeeForm').addEventListener('submit', submitEmployeeData);
-  
-  </script>
-  <script src="navbar.js"></script>
-</body>
-</html>
+
+        </script>
+<script src="navbar.js"></script>
+        </body>
+        </html>

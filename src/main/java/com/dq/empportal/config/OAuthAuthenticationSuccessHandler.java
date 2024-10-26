@@ -1,8 +1,8 @@
 package com.dq.empportal.config;
 
 
-import com.dq.empportal.Model.User;
-import com.dq.empportal.Repository.UserRepository;
+import com.dq.empportal.model.User;
+import com.dq.empportal.repository.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

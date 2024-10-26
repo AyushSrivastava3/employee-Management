@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Client</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        html, body {
+  height: 100%; /* Ensure full height */
+  margin: 0; /* Remove default margins */
+}
+
+body {
+  display: flex;
+  flex-direction: column; /* Make the body a flex container */
+}
+
+.container {
+  flex-grow: 1; /* Allow the content to expand and fill available space */
+}
+
+footer {
+            margin-top: auto;
+        }
+       /* Stylish spinner container */
+        .spinner-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            z-index: 1000;
+        }
+
+        /* Modern Stylish Spinner */
+        .stylish-spinner {
+            width: 64px;
+            height: 64px;
+            border: 8px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #4f46e5; /* Indigo-500 from Tailwind */
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite, pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Spinner Animation */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Pulsating effect */
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 20px rgba(79, 70, 229, 0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+<div id="navbar"></div>
+<!-- Spinner Container -->
+<!-- Spinner Container -->
+<div id="spinner-container" class="spinner-container">
+    <div class="stylish-spinner"></div>
+</div>
+
+<!-- Notification (hidden by default) -->
+<div id="notification" class="hidden container mx-auto mt-6 px-4 py-3 border rounded-md" role="alert"></div>
+
+<!-- Add New Client Form -->
+<div class="w-full mx-auto bg-white p-2 rounded-lg shadow-lg">
+    <!-- File Upload Button (Top right corner) -->
+
+
+    <form class="bg-white p-6 shadow-lg rounded-lg" onsubmit="addClient(event)">
+        <div class="flex justify-between items-center mb-1">
+            <!-- Left side: CSV File Upload -->
+            <div class="flex items-center">
+                <input type="file" id="csv-file-input" class="custom-file-input bg-blue-50 text-gray-800 px-4 py-2 w-60 rounded cursor-pointer transition duration-200" accept=".csv" />
+                <button type="button" id="import-csv-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 ml-4 rounded-md inline-flex items-center transition-colors duration-300 transform hover:scale-105" onclick="importCSV()">
+                    Import Client
+                </button>
+            </div>
+
+
+            <!-- Right side: Other Buttons -->
+            <div class="ml-auto">
+                <a href="clients_list.html" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md inline-flex items-center">
+
+                    See all client
+                </a>
+            </div>
+        </div>
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Add New Client</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="clientName" class="block text-lg font-medium text-gray-700">Client Name</label>
+                <input type="text" id="clientName" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md" required>
+            </div>
+            <div>
+                <label for="clientAddress" class="block text-lg font-medium text-gray-700">Client Address</label>
+                <input type="text" id="clientAddress" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="gstNumber" class="block text-lg font-medium text-gray-700">GST Number</label>
+                <input type="text" id="gstNumber" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="accountNumber" class="block text-lg font-medium text-gray-700">Account Number</label>
+                <input type="text" id="accountNumber" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="ifscCode" class="block text-lg font-medium text-gray-700">IFSC Code</label>
+                <input type="text" id="ifscCode" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="currency" class="block text-lg font-medium text-gray-700">Currency</label>
+                <input type="text" id="currency" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="location" class="block text-lg font-medium text-gray-700">Location</label>
+                <input type="text" id="location" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="timeline" class="block text-lg font-medium text-gray-700">Timeline</label>
+                <input type="text" id="timeline" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="miscellaneous" class="block text-lg font-medium text-gray-700">Miscellaneous</label>
+                <input type="text" id="miscellaneous" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Add Client</button>
+        </div>
+    </form>
+</div>
+<footer id="footer"></footer>
+<script>
+    // Show the spinner for a few seconds while loading content
+    document.addEventListener("DOMContentLoaded", function() {
+        // Simulate content loading with a timeout
+        setTimeout(function() {
+            document.getElementById("spinner-container").style.display = "none";  // Hide spinner after loading
+        }, 1100); // Adjust the delay based on your requirements
+    });
+    fetch('navbar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar').innerHTML = data;
+        });
+
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+
+    async function importCSV() {
+        const fileInput = document.getElementById('csv-file-input');
+        const file = fileInput.files[0];  // Get the uploaded CSV file
+
+        if (!file) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'No File Selected',
+                text: 'Please select a CSV file.',
+            });
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);  // Append the file to FormData
+
+        try {
+            const response = await fetch('http://localhost:8080/api/clients/clients/import', {
+                method: 'POST',
+                body: formData  // Send the formData with the file
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to import CSV file: ' + response.statusText);
+            }
+
+            const data = await response.json();
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'CSV file imported successfully.',
+            });
+
+            console.log("Imported clients:", data);
+
+            // Optionally, refresh or redirect to the clients list page
+            setTimeout(() => {
+                window.location.href = 'clients_list.html'; // Redirect after success
+            }, 2000); // 2-second delay before redirection
+        } catch (error) {
+            console.error('Error importing CSV:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Import Failed',
+                text: 'Failed to import CSV file. Please try again.',
+            });
+        }
+    }
+
+    async function addClient(event) {
+        event.preventDefault(); // Prevent form from submitting the traditional way
+
+        // Collect the form data
+        const newClient = {
+            clientName: document.getElementById('clientName').value,
+            clientAddress: document.getElementById('clientAddress').value,
+            gstNumber: document.getElementById('gstNumber').value,
+            accountNumber: document.getElementById('accountNumber').value,
+            ifscCode: document.getElementById('ifscCode').value,
+            currency: document.getElementById('currency').value,
+            location: document.getElementById('location').value,
+            timeline: document.getElementById('timeline').value,
+            miscellaneous: document.getElementById('miscellaneous').value
+        };
+
+        try {
+            // Make the API request to add the new client
+            const response = await fetch('http://localhost:8080/api/clients', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newClient)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to add client: ' + response.statusText);
+            }
+
+            // Notify the user of success
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Client added successfully.',
+            });
+
+            // Redirect after a short delay
+            setTimeout(() => {
+                window.location.href = 'clients_list.html'; // Redirect to clients list
+            }, 2000); // 2-second delay before redirection
+        } catch (error) {
+            console.error('Error adding client:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Add Client Failed',
+                text: 'Failed to add client. Please try again later.',
+            });
+        }
+    }
+</script>
+<script src="navbar.js"></script>
+</body>
+</html>

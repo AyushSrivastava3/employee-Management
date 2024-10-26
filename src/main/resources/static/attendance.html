@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock In/Clock Out</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+<div class="container mx-auto mt-10">
+    <div class="bg-white shadow-md rounded-lg p-6 text-center">
+        <h1 class="text-2xl font-bold mb-4">Attendance Clock In/Clock Out</h1>
+
+        <!-- Clock In/Clock Out Button -->
+        <div id="statusContainer" class="mb-4">
+            <!-- Status message will go here -->
+        </div>
+
+        <!-- Clock In/Clock Out button -->
+        <button id="clockInOutButton"
+                class="bg-indigo-600 text-white px-4 py-2 rounded-md text-lg">
+            Clock In
+        </button>
+
+        <!-- Display clock in/out times -->
+        <div id="timeDisplay" class="mt-6">
+            <!-- Clock in/out time will go here -->
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript to handle Clock In/Clock Out
+    let isClockedIn = false;  // Variable to store if user is clocked in
+    const clockInOutButton = document.getElementById('clockInOutButton');
+    const statusContainer = document.getElementById('statusContainer');
+    const timeDisplay = document.getElementById('timeDisplay');
+    let checkInTime, checkOutTime;
+
+    // Function to update UI based on clock in/out state
+    function updateUI() {
+        if (isClockedIn) {
+            clockInOutButton.textContent = 'Clock Out';
+            statusContainer.innerHTML = `<p class="text-green-500 font-semibold">You are clocked in</p>`;
+            timeDisplay.innerHTML = `<p>Clock In Time: <strong>${checkInTime}</strong></p>`;
+        } else {
+            clockInOutButton.textContent = 'Clock In';
+            statusContainer.innerHTML = `<p class="text-red-500 font-semibold">You are not clocked in</p>`;
+            timeDisplay.innerHTML = checkOutTime
+                ? `<p>Clock Out Time: <strong>${checkOutTime}</strong></p>`
+                : '';
+        }
+    }
+
+    // Function to get current time in HH:MM:SS format
+    function getCurrentTime() {
+        const now = new Date();
+        return now.toTimeString().split(' ')[0];
+    }
+
+    // Clock In/Clock Out button click handler
+    clockInOutButton.addEventListener('click', async () => {
+        if (isClockedIn) {
+            // Clock Out
+            checkOutTime = getCurrentTime();
+            isClockedIn = false;
+            await markAttendance(false, checkInTime, checkOutTime);
+        } else {
+            // Clock In
+            checkInTime = getCurrentTime();
+            isClockedIn = true;
+            await markAttendance(true, checkInTime, null);
+        }
+        updateUI();
+    });
+
+    // Function to send attendance data to backend (simplified for demonstration)
+    async function markAttendance(isClockingIn, checkInTime, checkOutTime) {
+        try {
+            const response = await fetch('http://localhost:8080/api/attendance', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    employee_id: 123,  // Replace with actual employee ID
+                    date: new Date().toISOString().split('T')[0],  // Current date
+                    check_in_time: isClockingIn ? checkInTime : null,
+                    check_out_time: !isClockingIn ? checkOutTime : null,
+                    status: isClockingIn ? 'Present' : 'Absent'
+                })
+            });
+
+            if (response.ok) {
+                console.log('Attendance recorded successfully');
+            } else {
+                throw new Error('Failed to record attendance');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    // Initialize UI
+    updateUI();
+</script>
+
+</body>
+</html>

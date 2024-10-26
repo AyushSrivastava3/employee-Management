@@ -1,12 +1,17 @@
 package com.employee_management_system.Employee_Management.Controller;
 
+import com.employee_management_system.Employee_Management.Dtos.EmployeeClientInfoDTO;
+import com.employee_management_system.Employee_Management.Dtos.UpdateDaysRequest;
 import com.employee_management_system.Employee_Management.Model.Employee;
+import com.employee_management_system.Employee_Management.Model.EmployeeClientInfo;
 import com.employee_management_system.Employee_Management.Service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +56,36 @@ public class EmployeeController {
     public ResponseEntity<Void> deleteEmployee(@PathVariable Integer id) {
         employeeService.deleteEmployee(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/updateDays")
+    public ResponseEntity<Employee> updateDays(
+            @RequestParam Integer employeeId,
+            @RequestBody UpdateDaysRequest request) {
+
+        // Update the employee-client info with the provided values
+        Employee updatedInfo = employeeService.updateDays(
+                employeeId,
+                request.getLeaveDays(),
+                request.getHolidays(),
+                request.getNonBillableDays());
+        return ResponseEntity.ok(updatedInfo);
+    }
+
+    @GetMapping("/employees/active")
+    public List<Employee> getActiveEmployeesInMonth(
+            @RequestParam("year") int year,
+            @RequestParam("month") int month) {
+        return employeeService.getActiveEmployeesInMonth(year, month);
+    }
+
+    @PostMapping("/removeDays")
+    public ResponseEntity<Employee> removeDays(
+            @RequestParam Integer employeeId,
+            @RequestBody UpdateDaysRequest request) {
+
+        Employee updatedInfo = employeeService.removeDays(employeeId, request.getLeaveDays(), request.getHolidays(), request.getNonBillableDays());
+        return ResponseEntity.ok(updatedInfo);
     }
 }
 

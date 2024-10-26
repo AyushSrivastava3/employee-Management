@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        /* Stylish spinner container */
+             .spinner-container {
+                 position: fixed;
+                 top: 0;
+                 left: 0;
+                 width: 100vw;
+                 height: 100vh;
+                 display: flex;
+                 justify-content: center;
+                 align-items: center;
+                 background-color: #ffffff;
+                 z-index: 1000;
+             }
+
+             /* Modern Stylish Spinner */
+             .stylish-spinner {
+                 width: 64px;
+                 height: 64px;
+                 border: 8px solid rgba(0, 0, 0, 0.1);
+                 border-left-color: #4f46e5; /* Indigo-500 from Tailwind */
+                 border-radius: 50%;
+                 animation: spin 1.2s linear infinite, pulse 1.5s ease-in-out infinite;
+             }
+
+             /* Spinner Animation */
+             @keyframes spin {
+                 0% {
+                     transform: rotate(0deg);
+                 }
+                 100% {
+                     transform: rotate(360deg);
+                 }
+             }
+
+             /* Pulsating effect */
+             @keyframes pulse {
+                 0%, 100% {
+                     box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+                 }
+                 50% {
+                     box-shadow: 0 0 0 20px rgba(79, 70, 229, 0);
+                 }
+             }
+body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    header {
+        flex: 1;
+    }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+<div id="navbar"></div>
+<!-- Spinner Container -->
+<div id="spinner-container" class="spinner-container">
+    <div class="stylish-spinner"></div>
+</div>
+
+<!-- Client Details Section -->
+<header class=" w-full mx-auto mt-3">
+    <div class="flex justify-between items-center mb-4 w-full">
+        <!-- Add Resources Button with Icon on the Left -->
+        <a href="assign.html" class="bg-yellow-500 font-bold text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition flex items-center">
+            <i class="fas fa-users mr-2"></i> Add Resources
+        </a>
+
+        <!-- Create Invoice Button with Icon -->
+<!--        <button onclick="generateInvoice()" class="bg-green-600 font-bold text-white px-4 py-2 ml-2 rounded-md hover:bg-green-700 transition flex items-center">-->
+<!--            <i class="fas fa-file-invoice-dollar mr-2"></i> Create Invoice-->
+<!--        </button>-->
+
+        <!-- Create Invoice Button with Icon -->
+        <button onclick="promptForYearMonth()" class="bg-green-600 font-bold text-white px-4 py-2 ml-2 rounded-md hover:bg-green-700 transition flex items-center">
+            <i class="fas fa-file-invoice-dollar mr-2"></i> Create Invoice
+        </button>
+
+
+        <!-- Centered Title -->
+        <h1 class="text-3xl font-bold text-gray-800 text-center flex-grow">
+            Client Details
+        </h1>
+
+        <!-- Edit and Delete Buttons on the Right -->
+        <div class="flex space-x-2">
+            <a id="editClientLink" class="bg-blue-600 text-white px-4 py-2 font-bold rounded-md hover:bg-blue-700 transition">
+                Edit Client
+            </a>
+            <button class="bg-red-600 text-white px-4 py-2 font-bold rounded-md hover:bg-red-700 transition" onclick="deleteClient()">
+                Delete Client
+            </button>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-xl font-semibold text-purple-600">Client ID</h2>
+            <p id="clientId" class="text-gray-700 text-lg font-medium"></p>
+        </div>
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-xl font-semibold text-purple-600">Client Name</h2>
+            <p id="clientName" class="text-gray-700 text-lg font-medium"></p>
+        </div>
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-xl font-semibold text-purple-600">Address</h2>
+            <p id="clientAddress" class="text-gray-700 text-lg font-medium"></p>
+        </div>
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-xl font-semibold text-purple-600">GST Number</h2>
+            <p id="gstNumber" class="text-gray-700 text-lg font-medium"></p>
+        </div>
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-xl font-semibold text-purple-600">Account Number</h2>
+            <p id="accountNumber" class="text-gray-700 text-lg font-medium"></p>
+        </div>
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-xl font-semibold text-purple-600">IFSC Code</h2>
+            <p id="ifscCode" class="text-gray-700 text-lg font-medium"></p>
+        </div>
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-xl font-semibold text-purple-600">Currency</h2>
+            <p id="currency" class="text-gray-700 text-lg font-medium"></p>
+        </div>
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-xl font-semibold text-purple-600">Total Pending Invoices</h2>
+            <p id="totalPendingInvoices" class="text-gray-700 text-lg font-medium"></p>
+        </div>
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-xl font-semibold text-purple-600">Created Date</h2>
+            <p id="createdDate" class="text-gray-700 text-lg font-medium"></p>
+        </div>
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-xl font-semibold text-purple-600">Location</h2>
+            <p id="location" class="text-gray-700 text-lg font-medium"></p>
+        </div>
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-xl font-semibold text-purple-600">Timeline</h2>
+            <p id="timeline" class="text-gray-700 text-lg font-medium"></p>
+        </div>
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+            <h2 class="text-xl font-semibold text-purple-600">Miscellaneous</h2>
+            <p id="miscellaneous" class="text-gray-700 text-lg font-medium"></p>
+        </div>
+    </div>
+</header>
+<footer id="footer"></footer>
+<script>
+    // Show the spinner for a few seconds while loading content
+    document.addEventListener("DOMContentLoaded", function() {
+        // Simulate content loading with a timeout
+        setTimeout(function() {
+            document.getElementById("spinner-container").style.display = "none";  // Hide spinner after loading
+        }, 1100); // Adjust the delay based on your requirements
+    });
+    fetch('navbar.html')
+       .then(response => response.text())
+       .then(data => {
+           document.getElementById('navbar').innerHTML = data;
+       });
+
+   fetch('footer.html')
+       .then(response => response.text())
+       .then(data => {
+           document.getElementById('footer').innerHTML = data;
+       });
+   // Function to fetch client details by ID
+   async function fetchClientDetails(clientId) {
+       try {
+           const response = await fetch(`http://localhost:8080/api/clients/${clientId}`); // Replace with your API URL
+           if (!response.ok) {
+               throw new Error('Network response was not ok: ' + response.statusText);
+           }
+           const client = await response.json();
+           displayClientDetails(client);
+       } catch (error) {
+           console.error('Error fetching client details:', error);
+           Swal.fire({
+               icon: 'error',
+               title: 'Error',
+               text: 'Failed to load client details. Please try again later.'
+           });
+       }
+   }
+
+   // Function to display client details in the UI
+   function displayClientDetails(client) {
+       document.getElementById('clientId').innerText = client.id;
+       document.getElementById('clientName').innerText = client.clientName;
+       document.getElementById('clientAddress').innerText = client.clientAddress || 'N/A';
+       document.getElementById('gstNumber').innerText = client.gstNumber || 'N/A';
+       document.getElementById('accountNumber').innerText = client.accountNumber || 'N/A';
+       document.getElementById('ifscCode').innerText = client.ifscCode || 'N/A';
+       document.getElementById('currency').innerText = client.currency || 'N/A';
+       document.getElementById('totalPendingInvoices').innerText = client.totalPendingInvoices || 'N/A';
+       document.getElementById('createdDate').innerText = client.createdDate ? new Date(client.createdDate).toLocaleDateString() : 'N/A';
+       document.getElementById('location').innerText = client.location || 'N/A';
+       document.getElementById('timeline').innerText = client.timeline || 'N/A';
+       document.getElementById('miscellaneous').innerText = client.miscellaneous || 'N/A';
+
+        // Update the edit client link to include the correct client ID
+       document.getElementById('editClientLink').href = `edit_client.html?id=${client.id}`;
+   }
+
+<!--   async function generateInvoice() {-->
+<!--        const clientId = document.getElementById('clientId').innerText;-->
+<!--        if (!clientId) {-->
+<!--            Swal.fire('Error', 'Client ID is missing!', 'error');-->
+<!--            return;-->
+<!--        }-->
+
+<!--        try {-->
+<!--            const response = await fetch('http://localhost:8080/api/invoices/generate', {-->
+<!--                method: 'POST',-->
+<!--                headers: {-->
+<!--                    'Content-Type': 'application/x-www-form-urlencoded'-->
+<!--                },-->
+<!--                body: new URLSearchParams({ clientId: clientId })-->
+<!--            });-->
+
+<!--            if (response.ok) {-->
+<!--                const blob = await response.blob();-->
+<!--                const link = document.createElement('a');-->
+<!--                link.href = window.URL.createObjectURL(blob);-->
+<!--                link.download = `Invoice_Client_${clientId}.pdf`;-->
+<!--                link.click();-->
+
+<!--                Swal.fire('Success', 'Invoice generated successfully!', 'success');-->
+<!--            } else {-->
+<!--                Swal.fire('Error', 'Failed to generate invoice', 'error');-->
+<!--            }-->
+<!--        } catch (error) {-->
+<!--            Swal.fire('Error', 'An error occurred while generating the invoice', 'error');-->
+<!--        }-->
+<!--    }-->
+
+
+
+    async function promptForYearMonth() {
+    const clientId = document.getElementById('clientId').innerText;
+    if (!clientId) {
+        Swal.fire('Error', 'Client ID is missing!', 'error');
+        return;
+    }
+
+    // Prompt user for the year and month
+    const { value: formValues } = await Swal.fire({
+        title: 'Select Year and Month',
+        html:
+            '<input id="yearInput" type="number" class="swal2-input" placeholder="Year" min="2000" max="2099" value="' + new Date().getFullYear() + '">' +
+            '<input id="monthInput" type="number" class="swal2-input" placeholder="Month" min="1" max="12" value="' + (new Date().getMonth() + 1) + '">',
+        focusConfirm: false,
+        preConfirm: () => {
+            const year = document.getElementById('yearInput').value;
+            const month = document.getElementById('monthInput').value;
+            if (!year || !month || month < 1 || month > 12) {
+                Swal.showValidationMessage('Please enter a valid year and month');
+                return;
+            }
+            return {
+                year: year,
+                month: month.padStart(2, '0') // Ensure month is two digits
+            };
+        }
+    });
+
+    if (formValues) {
+        generateInvoice(clientId, formValues.year, formValues.month);
+    }
+}
+
+async function generateInvoice(clientId, year, month) {
+    const yearMonth = `${year}-${month}`; // Format year and month as YYYY-MM
+    const url = `http://localhost:8080/api/invoices/generate?yearMonth=${yearMonth}&clientId=${clientId}`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' // Update content type if necessary
+            }
+        });
+
+        if (response.ok) {
+            const blob = await response.blob();
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `Invoice_Client_${clientId}_${year}-${month}.pdf`;
+            link.click();
+
+            Swal.fire('Success', 'Invoice generated successfully!', 'success');
+        } else {
+            Swal.fire('Error', 'Failed to generate invoice', 'error');
+        }
+    } catch (error) {
+        Swal.fire('Error', 'An error occurred while generating the invoice', 'error');
+    }
+}
+
+
+   // Fetch client ID from URL and load client details on page load
+   window.onload = function() {
+       const urlParams = new URLSearchParams(window.location.search);
+       const clientId = urlParams.get('id');
+       if (clientId) {
+           fetchClientDetails(clientId);
+       } else {
+           Swal.fire({
+               icon: 'error',
+               title: 'Error',
+               text: 'Client ID is missing.'
+           }).then(() => {
+               window.location.href = 'clients_list.html';
+           });
+       }
+   };
+
+<!--   // Function to delete a client-->
+<!--   async function deleteClient() {-->
+<!--       const urlParams = new URLSearchParams(window.location.search);-->
+<!--       const clientId = urlParams.get('id');-->
+
+<!--       if (confirm('Are you sure you want to delete this client?')) {-->
+<!--           try {-->
+<!--               const response = await fetch(`http://localhost:8080/api/clients/${clientId}`, { method: 'DELETE' });-->
+<!--               if (!response.ok) {-->
+<!--                   throw new Error('Network response was not ok: ' + response.statusText);-->
+<!--               }-->
+<!--               alert('Client deleted successfully.');-->
+<!--               window.location.href = 'clients.html'; // Redirect back to client list-->
+<!--           } catch (error) {-->
+<!--               console.error('Error deleting client:', error);-->
+<!--               alert('Failed to delete client. Please try again later.');-->
+<!--           }-->
+<!--       }-->
+<!--   }-->
+
+
+     // Function to delete a client
+   async function deleteClient() {
+       const urlParams = new URLSearchParams(window.location.search);
+       const clientId = urlParams.get('id');
+
+       Swal.fire({
+           title: 'Are you sure?',
+           text: "You won't be able to revert this!",
+           icon: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: '#3085d6',
+           cancelButtonColor: '#d33',
+           confirmButtonText: 'Yes, delete it!'
+       }).then(async (result) => {
+           if (result.isConfirmed) {
+               try {
+                   const response = await fetch(`http://localhost:8080/api/clients/${clientId}`, { method: 'DELETE' });
+                   if (!response.ok) {
+                       throw new Error('Network response was not ok: ' + response.statusText);
+                   }
+                   Swal.fire('Deleted!', 'Client has been deleted.', 'success').then(() => {
+                       window.location.href = 'clients.html';
+                   });
+               } catch (error) {
+                   console.error('Error deleting client:', error);
+                   Swal.fire({
+                       icon: 'error',
+                       title: 'Error',
+                       text: 'Failed to delete client. Please try again later.'
+                   });
+               }
+           }
+       });
+   }
+</script>
+<script src="navbar.js"></script>
+</body>
+</html>

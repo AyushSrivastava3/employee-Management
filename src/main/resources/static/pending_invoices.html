@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Invoices</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        html, body {
+height: 100%; /* Ensure full height */
+margin: 0; /* Remove default margins */
+}
+
+body {
+display: flex;
+flex-direction: column; /* Make the body a flex container */
+}
+
+.container {
+flex-grow: 1; /* Allow the content to expand and fill available space */
+}
+
+footer {
+         margin-top: auto;
+     }
+    </style>
+</head>
+<body class="bg-gray-100">
+<div id="navbar"></div>
+
+<div class="container mx-auto mt-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Pending Invoices</h1>
+
+    <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+        <table class="table-auto w-full">
+            <thead>
+            <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                <th class="py-3 px-6 text-left">Invoice ID</th>
+                <th class="py-3 px-6 text-left">Client Name</th>
+                <th class="py-3 px-6 text-left">Amount</th>
+                <th class="py-3 px-6 text-left">Due Date</th>
+                <th class="py-3 px-6 text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="invoiceTableBody" class="text-gray-600 text-sm font-light">
+            <!-- Invoice rows will be inserted here dynamically -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<footer id="footer"></footer>
+
+<script>
+    // Load navbar and footer
+    fetch('navbar.html').then(response => response.text()).then(data => { document.getElementById('navbar').innerHTML = data; });
+    fetch('footer.html').then(response => response.text()).then(data => { document.getElementById('footer').innerHTML = data; });
+
+    // Fetch and display pending invoices
+    async function fetchPendingInvoices() {
+        try {
+            const response = await fetch('http://localhost:8080/api/invoices/pending'); // Replace with your actual API URL
+            if (!response.ok) {
+                throw new Error('Failed to fetch invoices');
+            }
+            const invoices = await response.json();
+            displayInvoices(invoices);
+        } catch (error) {
+            console.error('Error:', error);
+            Swal.fire('Error', 'Failed to load pending invoices.', 'error');
+        }
+    }
+
+    // Function to display invoices in the table
+    function displayInvoices(invoices) {
+        const tableBody = document.getElementById('invoiceTableBody');
+        tableBody.innerHTML = ''; // Clear the table before adding new rows
+
+        if (invoices.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-gray-500">No pending invoices found.</td></tr>`;
+            return;
+        }
+
+        invoices.forEach(invoice => {
+            const row = `
+                <tr class="border-b border-gray-200 bg-gray-50 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left">${invoice.id}</td>
+                    <td class="py-3 px-6 text-left">${invoice.clientName}</td>
+                    <td class="py-3 px-6 text-left">$${invoice.amount.toFixed(2)}</td>
+                    <td class="py-3 px-6 text-left">${new Date(invoice.dueDate).toLocaleDateString()}</td>
+                    <td class="py-3 px-6 text-center">
+                        <a href="invoice_details.html?id=${invoice.id}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">View</a>
+                        <button class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition ml-2" onclick="deleteInvoice('${invoice.id}')">Delete</button>
+                    </td>
+                </tr>
+            `;
+            tableBody.insertAdjacentHTML('beforeend', row);
+        });
+    }
+
+    // Function to delete an invoice
+    async function deleteInvoice(invoiceId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch(`http://localhost:8080/api/invoices/${invoiceId}`, { method: 'DELETE' }); // Replace with your actual API URL
+                    if (!response.ok) {
+                        throw new Error('Failed to delete invoice');
+                    }
+                    Swal.fire('Deleted!', 'Invoice has been deleted.', 'success');
+                    fetchPendingInvoices(); // Reload invoices after deletion
+                } catch (error) {
+                    console.error('Error:', error);
+                    Swal.fire('Error', 'Failed to delete invoice.', 'error');
+                }
+            }
+        });
+    }
+
+    // Fetch pending invoices on page load
+    window.onload = fetchPendingInvoices;
+</script>
+<script src="navbar.js"></script>
+
+</body>
+</html>

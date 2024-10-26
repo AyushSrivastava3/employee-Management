@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Employee Efforts</title>
+
+    <!-- Include Flatpickr CSS and JavaScript -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+<div class="container mx-auto py-12">
+    <h1 class="text-4xl font-bold text-center mb-12 text-blue-600">Update Employee Efforts</h1>
+
+    <!-- Update Form -->
+    <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg p-8">
+        <form id="updateForm">
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="leaveDays">
+                    Select Leave Days
+                </label>
+                <input class="shadow border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300" id="leaveDays" type="text" placeholder="Select Leave Days">
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="holidays">
+                    Select Holidays
+                </label>
+                <input class="shadow border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300" id="holidays" type="text" placeholder="Select Holidays">
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="nonBillableDays">
+                    Select Non-Billable Days
+                </label>
+                <input class="shadow border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300" id="nonBillableDays" type="text" placeholder="Select Non-Billable Days">
+            </div>
+            <div class="flex justify-center">
+                <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring" type="button" onclick="updateEfforts()">
+                    Update
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Function to extract infoId from URL
+    function getInfoIdFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('infoId');
+    }
+
+    // Initialize Flatpickr for selecting multiple dates
+    flatpickr("#leaveDays", {
+        mode: "multiple",
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr, instance) {
+            // Handle date selection logic if needed
+        }
+    });
+
+    flatpickr("#holidays", {
+        mode: "multiple",
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr, instance) {
+            // Handle date selection logic if needed
+        }
+    });
+
+    flatpickr("#nonBillableDays", {
+        mode: "multiple",
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr, instance) {
+            // Handle date selection logic if needed
+        }
+    });
+
+    // Function to update efforts
+    async function updateEfforts() {
+        const infoId = getInfoIdFromUrl();
+        const leaveDays = document.getElementById('leaveDays').value.split(',');
+        const holidays = document.getElementById('holidays').value.split(',');
+        const nonBillableDays = document.getElementById('nonBillableDays').value.split(',');
+
+        const requestData = {
+            leaveDays: leaveDays,
+            holidays: holidays,
+            nonBillableDays: nonBillableDays
+        };
+
+        try {
+            const response = await fetch(`http://localhost:8080/employeeClientInfo/updateDays?infoId=${infoId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            if (response.ok) {
+                alert("Efforts updated successfully!");
+                window.location.href = 'your-redirect-page.html';  // Replace with actual redirect page
+            } else {
+                console.error('Error updating efforts:', response.status);
+            }
+        } catch (error) {
+            console.error("Error updating efforts:", error);
+        }
+    }
+</script>
+
+</body>
+</html>

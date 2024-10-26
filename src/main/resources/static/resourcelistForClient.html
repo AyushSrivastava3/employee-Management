@@ -1,0 +1,240 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Employees for Client</title>-->
+<!--    <script src="https://cdn.tailwindcss.com"></script>-->
+<!--</head>-->
+<!--<body class="bg-gray-100">-->
+
+<!--&lt;!&ndash; Page Container &ndash;&gt;-->
+<!--<div class="container mx-auto py-12">-->
+
+<!--    &lt;!&ndash; Page Header &ndash;&gt;-->
+<!--    <h1 class="text-4xl font-bold text-center mb-12 text-blue-600">Employees Working for Client</h1>-->
+
+<!--    &lt;!&ndash; Search Form &ndash;&gt;-->
+<!--    <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg p-8 mb-12">-->
+<!--        <form id="searchForm">-->
+<!--            <div class="mb-6">-->
+<!--                <label class="block text-gray-700 text-sm font-bold mb-2" for="clientId">-->
+<!--                    Client ID-->
+<!--                </label>-->
+<!--                <input class="shadow border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300" id="clientId" type="number" placeholder="Enter Client ID">-->
+<!--            </div>-->
+<!--            <div class="mb-6">-->
+<!--                <label class="block text-gray-700 text-sm font-bold mb-2" for="yearMonth">-->
+<!--                    Year-Month (YYYY-MM)-->
+<!--                </label>-->
+<!--                <input class="shadow border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300" id="yearMonth" type="month">-->
+<!--            </div>-->
+<!--            <div class="flex justify-center">-->
+<!--                <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring" type="button" onclick="fetchEmployees()">-->
+<!--                    Search-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Employee Data Table &ndash;&gt;-->
+<!--    <div id="employeeTableContainer" class="hidden overflow-x-auto">-->
+<!--        <table class="min-w-full bg-white shadow-lg rounded-lg">-->
+<!--            <thead>-->
+<!--            <tr class="bg-blue-500 text-white text-left">-->
+<!--                <th class="py-3 px-4 uppercase font-semibold text-sm">ID</th>-->
+<!--                <th class="py-3 px-4 uppercase font-semibold text-sm">Employee Name</th>-->
+<!--                <th class="py-3 px-4 uppercase font-semibold text-sm">Hourly Rate</th>-->
+<!--                <th class="py-3 px-4 uppercase font-semibold text-sm">Total Billable Hours</th>-->
+<!--                <th class="py-3 px-4 uppercase font-semibold text-sm">Leave Days</th>-->
+<!--                <th class="py-3 px-4 uppercase font-semibold text-sm">Holidays</th>-->
+<!--                <th class="py-3 px-4 uppercase font-semibold text-sm">Non-Billable Days</th>-->
+<!--                <th class="py-3 px-4 uppercase font-semibold text-sm">Action</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody id="employeeTableBody">-->
+<!--            &lt;!&ndash; Data will be dynamically inserted here &ndash;&gt;-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    // Function to fetch employees from API-->
+<!--    async function fetchEmployees() {-->
+<!--        const clientId = document.getElementById('clientId').value;-->
+<!--        const yearMonth = document.getElementById('yearMonth').value;-->
+
+<!--        if (!clientId || !yearMonth) {-->
+<!--            alert("Please provide both Client ID and Year-Month");-->
+<!--            return;-->
+<!--        }-->
+
+<!--        try {-->
+<!--            const response = await fetch(`http://localhost:8080/employeeClientInfo/employeesForClientInMonth?clientId=${clientId}&yearMonth=${yearMonth}`);-->
+<!--            const data = await response.json();-->
+<!--            renderTable(data);-->
+<!--        } catch (error) {-->
+<!--            console.error("Error fetching employees:", error);-->
+<!--        }-->
+<!--    }-->
+
+<!--    // Function to handle Update Efforts action-->
+<!--    function updateEfforts(employeeId) {-->
+<!--        alert(`Update Efforts for Employee ID: ${employeeId}`);-->
+<!--        // You can add logic to open a modal or redirect to another page for updating efforts-->
+<!--    }-->
+
+<!--    // Function to render the employee table-->
+<!--    function renderTable(data) {-->
+<!--        const tableBody = document.getElementById('employeeTableBody');-->
+<!--        tableBody.innerHTML = ''; // Clear previous data-->
+
+<!--        data.forEach(employee => {-->
+<!--            const row = `-->
+<!--                <tr class="border-t border-gray-200 hover:bg-gray-100">-->
+<!--                    <td class="py-3 px-4">${employee.id}</td>-->
+<!--                    <td class="py-3 px-4">${employee.employeeName}</td>-->
+<!--                    <td class="py-3 px-4">${employee.hourlyRate}</td>-->
+<!--                    <td class="py-3 px-4">${employee.totalBillableHours}</td>-->
+<!--                    <td class="py-3 px-4">${employee.leaveDays.join(', ')}</td>-->
+<!--                    <td class="py-3 px-4">${employee.holidays.join(', ')}</td>-->
+<!--                    <td class="py-3 px-4">${employee.nonBillableDays.join(', ')}</td>-->
+<!--                    <td class="py-3 px-4">-->
+<!--                        <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded" onclick="updateEfforts(${employee.id})">-->
+<!--                            Update Efforts-->
+<!--                        </button>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            `;-->
+<!--            tableBody.insertAdjacentHTML('beforeend', row);-->
+<!--        });-->
+
+<!--        // Show the table after data is fetched-->
+<!--        document.getElementById('employeeTableContainer').classList.remove('hidden');-->
+<!--    }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employees for Client</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+<!-- Page Container -->
+<div class="container mx-auto py-12">
+
+    <!-- Page Header -->
+    <h1 class="text-4xl font-bold text-center mb-12 text-blue-600">Employees Working for Client</h1>
+
+    <!-- Search Form -->
+    <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg p-8 mb-12">
+        <form id="searchForm">
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="clientId">
+                    Client ID
+                </label>
+                <input class="shadow border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300" id="clientId" type="number" placeholder="Enter Client ID">
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="yearMonth">
+                    Year-Month (YYYY-MM)
+                </label>
+                <input class="shadow border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300" id="yearMonth" type="month">
+            </div>
+            <div class="flex justify-center">
+                <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring" type="button" onclick="fetchEmployees()">
+                    Search
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Employee Data Table -->
+    <div id="employeeTableContainer" class="hidden overflow-x-auto">
+        <table class="min-w-full bg-white shadow-lg rounded-lg">
+            <thead>
+            <tr class="bg-blue-500 text-white text-left">
+                <th class="py-3 px-4 uppercase font-semibold text-sm">ID</th>
+                <th class="py-3 px-4 uppercase font-semibold text-sm">Employee Name</th>
+                <th class="py-3 px-4 uppercase font-semibold text-sm">Hourly Rate</th>
+                <th class="py-3 px-4 uppercase font-semibold text-sm">Total Billable Hours</th>
+                <th class="py-3 px-4 uppercase font-semibold text-sm">Leave Days</th>
+                <th class="py-3 px-4 uppercase font-semibold text-sm">Holidays</th>
+                <th class="py-3 px-4 uppercase font-semibold text-sm">Non-Billable Days</th>
+                <th class="py-3 px-4 uppercase font-semibold text-sm">Action</th>
+            </tr>
+            </thead>
+            <tbody id="employeeTableBody">
+            <!-- Data will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Function to fetch employees from API
+    async function fetchEmployees() {
+        const clientId = document.getElementById('clientId').value;
+        const yearMonth = document.getElementById('yearMonth').value;
+
+        if (!clientId || !yearMonth) {
+            alert("Please provide both Client ID and Year-Month");
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/employeeClientInfo/employeesForClientInMonth?clientId=${clientId}&yearMonth=${yearMonth}`);
+            const data = await response.json();
+            renderTable(data);
+        } catch (error) {
+            console.error("Error fetching employees:", error);
+        }
+    }
+
+    // Function to render the employee table
+    function renderTable(data) {
+        const tableBody = document.getElementById('employeeTableBody');
+        tableBody.innerHTML = ''; // Clear previous data
+
+        data.forEach(employee => {
+            const row = `
+                <tr class="border-t border-gray-200 hover:bg-gray-100">
+                    <td class="py-3 px-4">${employee.id}</td>
+                    <td class="py-3 px-4">${employee.employeeName}</td>
+                    <td class="py-3 px-4">${employee.hourlyRate}</td>
+                    <td class="py-3 px-4">${employee.totalBillableHours}</td>
+                    <td class="py-3 px-4">${employee.leaveDays.join(', ')}</td>
+                    <td class="py-3 px-4">${employee.holidays.join(', ')}</td>
+                    <td class="py-3 px-4">${employee.nonBillableDays.join(', ')}</td>
+                    <td class="py-3 px-4">
+                        <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded" onclick="goToUpdatePage(${employee.id})">
+                            Update Efforts
+                        </button>
+                    </td>
+                </tr>
+            `;
+            tableBody.insertAdjacentHTML('beforeend', row);
+        });
+
+        // Show the table after data is fetched
+        document.getElementById('employeeTableContainer').classList.remove('hidden');
+    }
+
+    // Function to navigate to the Update Efforts page
+    function goToUpdatePage(employeeId) {
+        window.location.href = `updateEfforts.html?infoId=${employeeId}`;
+    }
+</script>
+</body>
+</html>

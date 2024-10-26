@@ -6,12 +6,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Form</title>
     <style>
+        /* Stylish spinner container */
+       .spinner-container {
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100vw;
+           height: 100vh;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           background-color: #ffffff;
+           z-index: 1000;
+       }
 
+       /* Modern Stylish Spinner */
+       .stylish-spinner {
+           width: 64px;
+           height: 64px;
+           border: 8px solid rgba(0, 0, 0, 0.1);
+           border-left-color: #4f46e5; /* Indigo-500 from Tailwind */
+           border-radius: 50%;
+           animation: spin 1.2s linear infinite, pulse 1.5s ease-in-out infinite;
+       }
+
+       /* Spinner Animation */
+       @keyframes spin {
+           0% {
+               transform: rotate(0deg);
+           }
+           100% {
+               transform: rotate(360deg);
+           }
+       }
+
+       /* Pulsating effect */
+       @keyframes pulse {
+           0%, 100% {
+               box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+           }
+           50% {
+               box-shadow: 0 0 0 20px rgba(79, 70, 229, 0);
+           }
+       }
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body  class="bg-gray-100">
 <div id="navbar"></div>
+<!-- Spinner Container -->
+<div id="spinner-container" class="spinner-container">
+    <div class="stylish-spinner"></div>
+</div>
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
     <form id="addEmployeeForm">
     <h1 class="text-3xl font-bold text-center mb-6">Employee Details Form</h1>
@@ -251,6 +299,14 @@
 
         <script>
 
+            // Show the spinner for a few seconds while loading content
+    document.addEventListener("DOMContentLoaded", function() {
+        // Simulate content loading with a timeout
+        setTimeout(function() {
+            document.getElementById("spinner-container").style.display = "none";  // Hide spinner after loading
+        }, 1100); // Adjust the delay based on your requirements
+    });
+
             fetch('navbar.html')
         .then(response => response.text())
         .then(data => {
@@ -327,15 +383,33 @@
 
       if (response.ok) {
         const createdEmployee = await response.json();
-        alert('Employee created successfully: ' + createdEmployee.firstName);
-        document.getElementById('addEmployeeForm').reset();
+        Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Employee created successfully: ' + createdEmployee.firstName,
+                        timer: 3000,
+                        showConfirmButton: false,
+                    });
+         document.getElementById('addEmployeeForm').reset();
       } else {
         const errorResponse = await response.json();
-        alert('Error creating employee: ' + errorResponse.message);
+        Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error creating employee: ' + errorResponse.message,
+                timer: 3000,
+                showConfirmButton: false,
+            });
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('An error occurred while submitting the employee data');
+      Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while submitting the employee data',
+            timer: 3000,
+            showConfirmButton: false,
+        });
     }
   }
 

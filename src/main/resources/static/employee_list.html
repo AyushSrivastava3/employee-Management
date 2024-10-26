@@ -6,6 +6,8 @@
     <title>Employee List</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         /* Custom scrollbar for table container */
         ::-webkit-scrollbar {
@@ -37,12 +39,58 @@ body {
 footer {
             margin-top: auto;
         }
+         /* Stylish spinner container */
+        .spinner-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            z-index: 1000;
+        }
+
+        /* Modern Stylish Spinner */
+        .stylish-spinner {
+            width: 64px;
+            height: 64px;
+            border: 8px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #4f46e5; /* Indigo-500 from Tailwind */
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite, pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Spinner Animation */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Pulsating effect */
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 20px rgba(79, 70, 229, 0);
+            }
+        }
     </style>
 </head>
 <body class="bg-white leading-relaxed text-gray-800">
     <!-- Include Navbar -->
     <div id="navbar"></div>
-
+    <!-- Spinner Container -->
+    <div id="spinner-container" class="spinner-container">
+        <div class="stylish-spinner"></div>
+    </div>
     <!-- Wrapper to stretch content full width -->
     <div class="w-full mx-auto my-4 bg-white shadow-xl rounded-xl px-4">
         <!-- Flex container for heading and button -->
@@ -93,6 +141,13 @@ footer {
 <footer id="footer"></footer>
 
     <script>
+        // Show the spinner for a few seconds while loading content
+    document.addEventListener("DOMContentLoaded", function() {
+        // Simulate content loading with a timeout
+        setTimeout(function() {
+            document.getElementById("spinner-container").style.display = "none";  // Hide spinner after loading
+        }, 1100); // Adjust the delay based on your requirements
+    });
 
 fetch('navbar.html')
         .then(response => response.text())
@@ -110,7 +165,7 @@ fetch('navbar.html')
             try {
                 const response = await fetch('http://localhost:8080/employees');
                 const employees = await response.json();
-                
+
                 const tableBody = document.getElementById('employeeTableBody');
                 const loadingDiv = document.getElementById('loading');
                 loadingDiv.style.display = 'none'; // Hide loading once data is fetched
@@ -133,15 +188,15 @@ fetch('navbar.html')
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         ${employee.firstName}
                     </td>
-                        
-                        
+
+
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${employee.lastName}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${employee.id}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${employee.personalEmail || employee.professionalEmail}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${employee.jobTitle}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${employee.department}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <a href="/employee-details.html?id=${employee.id}" class="text-indigo-600 hover:text-indigo-900 text-sm font-semibold">View</a>
+                            <a href="employee-details.html?id=${employee.id}" class="text-indigo-600 hover:text-indigo-900 text-sm font-semibold">View</a>
                         </td>
                     `;
                     tableBody.appendChild(row);
@@ -155,7 +210,5 @@ fetch('navbar.html')
         // Fetch employees on page load
         window.onload = fetchEmployees;
     </script>
-      <script src="navbar.js"></script>
-
-</body>
+<script src="navbar.js"></script>
 </html>

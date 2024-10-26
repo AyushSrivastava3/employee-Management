@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Client</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Stylish spinner container */
+      .spinner-container {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #ffffff;
+          z-index: 1000;
+      }
+
+      /* Modern Stylish Spinner */
+      .stylish-spinner {
+          width: 64px;
+          height: 64px;
+          border: 8px solid rgba(0, 0, 0, 0.1);
+          border-left-color: #4f46e5; /* Indigo-500 from Tailwind */
+          border-radius: 50%;
+          animation: spin 1.2s linear infinite, pulse 1.5s ease-in-out infinite;
+      }
+
+      /* Spinner Animation */
+      @keyframes spin {
+          0% {
+              transform: rotate(0deg);
+          }
+          100% {
+              transform: rotate(360deg);
+          }
+      }
+
+      /* Pulsating effect */
+      @keyframes pulse {
+          0%, 100% {
+              box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+          }
+          50% {
+              box-shadow: 0 0 0 20px rgba(79, 70, 229, 0);
+          }
+      }
+    </style>
+
+</head>
+<body class="bg-gray-100">
+<div id="navbar"></div>
+<!-- Spinner Container -->
+<div id="spinner-container" class="spinner-container">
+    <div class="stylish-spinner"></div>
+</div>
+<!-- Navbar -->
+<!-- Edit Client Form -->
+<header class="container mx-auto mt-8">
+
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Edit Client</h1>
+
+    <form class="bg-white p-6 shadow-lg rounded-lg" onsubmit="updateClient(event)">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="clientName" class="block text-lg font-medium text-gray-700">Client Name</label>
+                <input type="text" id="clientName" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md" required>
+            </div>
+            <div>
+                <label for="clientAddress" class="block text-lg font-medium text-gray-700">Client Address</label>
+                <input type="text" id="clientAddress" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="gstNumber" class="block text-lg font-medium text-gray-700">GST Number</label>
+                <input type="text" id="gstNumber" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="accountNumber" class="block text-lg font-medium text-gray-700">Account Number</label>
+                <input type="text" id="accountNumber" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="ifscCode" class="block text-lg font-medium text-gray-700">IFSC Code</label>
+                <input type="text" id="ifscCode" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="currency" class="block text-lg font-medium text-gray-700">Currency</label>
+                <input type="text" id="currency" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="location" class="block text-lg font-medium text-gray-700">Location</label>
+                <input type="text" id="location" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="timeline" class="block text-lg font-medium text-gray-700">Timeline</label>
+                <input type="text" id="timeline" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="miscellaneous" class="block text-lg font-medium text-gray-700">Miscellaneous</label>
+                <input type="text" id="miscellaneous" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Update Client</button>
+        </div>
+    </form>
+
+</header>
+<footer id="footer"></footer>
+<!--<script>-->
+<!--    fetch('navbar.html')-->
+<!--        .then(response => response.text())-->
+<!--        .then(data => {-->
+<!--            document.getElementById('navbar').innerHTML = data;-->
+<!--        });-->
+
+<!--    fetch('footer.html')-->
+<!--        .then(response => response.text())-->
+<!--        .then(data => {-->
+<!--            document.getElementById('footer').innerHTML = data;-->
+<!--        });-->
+<!--    // Function to fetch client details using the client ID from the URL-->
+<!--    async function fetchClientDetails(clientId) {-->
+<!--        try {-->
+<!--            const response = await fetch(`http://localhost:8080/api/clients/${clientId}`);-->
+<!--            if (!response.ok) {-->
+<!--                throw new Error('Network response was not ok: ' + response.statusText);-->
+<!--            }-->
+<!--            const client = await response.json();-->
+<!--            populateForm(client);-->
+<!--        } catch (error) {-->
+<!--            console.error('Error fetching client details:', error);-->
+<!--            alert('Failed to load client details. Please try again later.');-->
+<!--        }-->
+<!--    }-->
+
+<!--    // Function to populate form fields with fetched client data-->
+<!--    function populateForm(client) {-->
+<!--        document.getElementById('clientName').value = client.clientName || '';-->
+<!--        document.getElementById('clientAddress').value = client.clientAddress || '';-->
+<!--        document.getElementById('gstNumber').value = client.gstNumber || '';-->
+<!--        document.getElementById('accountNumber').value = client.accountNumber || '';-->
+<!--        document.getElementById('ifscCode').value = client.ifscCode || '';-->
+<!--        document.getElementById('currency').value = client.currency || '';-->
+<!--        document.getElementById('location').value = client.location || '';-->
+<!--        document.getElementById('timeline').value = client.timeline || '';-->
+<!--        document.getElementById('miscellaneous').value = client.miscellaneous || '';-->
+<!--    }-->
+
+<!--    // On page load, extract the client ID from the URL and fetch client details-->
+<!--    window.onload = function() {-->
+<!--        const urlParams = new URLSearchParams(window.location.search);-->
+<!--        const clientId = urlParams.get('id');-->
+<!--        if (clientId) {-->
+<!--            fetchClientDetails(clientId);-->
+<!--        } else {-->
+<!--            alert('Client ID is missing.');-->
+<!--            window.location.href = 'clients.html';  // Redirect to clients page if ID is missing-->
+<!--        }-->
+<!--    };-->
+
+<!--    // Function to update client details on form submission-->
+<!--    async function updateClient(event) {-->
+<!--        event.preventDefault();-->
+<!--        const urlParams = new URLSearchParams(window.location.search);-->
+<!--        const clientId = urlParams.get('id');-->
+
+<!--        const updatedClient = {-->
+<!--            clientName: document.getElementById('clientName').value,-->
+<!--            clientAddress: document.getElementById('clientAddress').value,-->
+<!--            gstNumber: document.getElementById('gstNumber').value,-->
+<!--            accountNumber: document.getElementById('accountNumber').value,-->
+<!--            ifscCode: document.getElementById('ifscCode').value,-->
+<!--            currency: document.getElementById('currency').value,-->
+<!--            location: document.getElementById('location').value,-->
+<!--            timeline: document.getElementById('timeline').value,-->
+<!--            miscellaneous: document.getElementById('miscellaneous').value-->
+<!--        };-->
+
+<!--        try {-->
+<!--            const response = await fetch(`http://localhost:8080/api/clients/${clientId}`, {-->
+<!--                method: 'PUT',-->
+<!--                headers: { 'Content-Type': 'application/json' },-->
+<!--                body: JSON.stringify(updatedClient)-->
+<!--            });-->
+
+<!--            if (!response.ok) {-->
+<!--                throw new Error('Network response was not ok: ' + response.statusText);-->
+<!--            }-->
+
+<!--            alert('Client updated successfully.');-->
+<!--            window.location.href = `client_view.html?id=${clientId}`;-->
+<!--        } catch (error) {-->
+<!--            console.error('Error updating client:', error);-->
+<!--            alert('Failed to update client. Please try again later.');-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+
+
+
+<script>
+    // Show the spinner for a few seconds while loading content
+    document.addEventListener("DOMContentLoaded", function() {
+        // Simulate content loading with a timeout
+        setTimeout(function() {
+            document.getElementById("spinner-container").style.display = "none";  // Hide spinner after loading
+        }, 1100); // Adjust the delay based on your requirements
+    });
+    fetch('navbar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar').innerHTML = data;
+        });
+
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+
+    // Function to fetch client details using the client ID from the URL
+    async function fetchClientDetails(clientId) {
+        try {
+            const response = await fetch(`http://localhost:8080/api/clients/${clientId}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            const client = await response.json();
+            populateForm(client);
+        } catch (error) {
+            console.error('Error fetching client details:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to load client details. Please try again later.'
+            });
+        }
+    }
+
+    // Function to populate form fields with fetched client data
+    function populateForm(client) {
+        document.getElementById('clientName').value = client.clientName || '';
+        document.getElementById('clientAddress').value = client.clientAddress || '';
+        document.getElementById('gstNumber').value = client.gstNumber || '';
+        document.getElementById('accountNumber').value = client.accountNumber || '';
+        document.getElementById('ifscCode').value = client.ifscCode || '';
+        document.getElementById('currency').value = client.currency || '';
+        document.getElementById('location').value = client.location || '';
+        document.getElementById('timeline').value = client.timeline || '';
+        document.getElementById('miscellaneous').value = client.miscellaneous || '';
+    }
+
+    // On page load, extract the client ID from the URL and fetch client details
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const clientId = urlParams.get('id');
+        if (clientId) {
+            fetchClientDetails(clientId);
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing ID',
+                text: 'Client ID is missing.',
+                confirmButtonText: 'Go to Clients'
+            }).then(() => {
+                window.location.href = 'clients_list.html';  // Redirect to clients page if ID is missing
+            });
+        }
+    };
+
+    // Function to update client details on form submission
+    async function updateClient(event) {
+        event.preventDefault();
+        const urlParams = new URLSearchParams(window.location.search);
+        const clientId = urlParams.get('id');
+
+        const updatedClient = {
+            clientName: document.getElementById('clientName').value,
+            clientAddress: document.getElementById('clientAddress').value,
+            gstNumber: document.getElementById('gstNumber').value,
+            accountNumber: document.getElementById('accountNumber').value,
+            ifscCode: document.getElementById('ifscCode').value,
+            currency: document.getElementById('currency').value,
+            location: document.getElementById('location').value,
+            timeline: document.getElementById('timeline').value,
+            miscellaneous: document.getElementById('miscellaneous').value
+        };
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/clients/${clientId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedClient)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Client Updated',
+                text: 'Client updated successfully.',
+                timer: 1500,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = `client_view.html?id=${clientId}`;
+            });
+        } catch (error) {
+            console.error('Error updating client:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to update client. Please try again later.'
+            });
+        }
+    }
+</script>
+
+<script src="navbar.js"></script>
+</body>
+</html>

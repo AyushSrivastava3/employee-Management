@@ -1,12 +1,11 @@
 package com.employee_management_system.Employee_Management.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +24,7 @@ public class Employee {
     private String personalEmail;
     private String professionalEmail;
     private LocalDate dateOfJoining;
+    private LocalDate dateOfResigning;
     private int totalLeavesAvailable;
     private int leavesTakenThisMonth;
     private double salaryPerAnnum;
@@ -71,5 +71,31 @@ public class Employee {
     private LocalDate laptopReceivedDate;
     private String laptopBills;
 
+    private String employeeCreatedBy;
+    private String employeeUpdatedBy;
 
+
+    @ElementCollection
+    private List<LocalDate> leaveDays = new ArrayList<>();
+    @ElementCollection
+    private List<LocalDate> holidays = new ArrayList<>(); // Store holidays as a list of dates
+    @ElementCollection
+    private List<LocalDate> nonBillableDays = new ArrayList<>();
+
+    public int getLeaveDaysWithinPeriod(LocalDate startDate, LocalDate endDate) {
+        return (int) leaveDays.stream()
+                .filter(date -> !date.isBefore(startDate) && !date.isAfter(endDate))
+                .count();
+    }
+    public int getHolidaysWithinPeriod(LocalDate startDate, LocalDate endDate) {
+        return (int) holidays.stream()
+                .filter(date -> !date.isBefore(startDate) && !date.isAfter(endDate))
+                .count();
+    }
+
+    public int getNonBillableDaysWithinPeriod(LocalDate startDate, LocalDate endDate) {
+        return (int) nonBillableDays.stream()
+                .filter(date -> !date.isBefore(startDate) && !date.isAfter(endDate))
+                .count();
+    }
 }

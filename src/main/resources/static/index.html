@@ -32,33 +32,65 @@
             color: #6366F1;
         }
 
-        .loader {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-top: 4px solid #6366F1;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
+       /* Stylish spinner container */
+        .spinner-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            z-index: 1000;
         }
 
+        /* Modern Stylish Spinner */
+        .stylish-spinner {
+            width: 64px;
+            height: 64px;
+            border: 8px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #4f46e5; /* Indigo-500 from Tailwind */
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite, pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Spinner Animation */
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Pulsating effect */
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 20px rgba(79, 70, 229, 0);
+            }
         }
     </style>
 </head>
 <body class="bg-gray-50">
 
-<div id="spinner" class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 hidden">
-    <div class="loader"></div>
-</div>
+
 
 <!-- Main Content Wrapper -->
-<div id="main-content" class="hidden">
+<div id="main-content" >
     <!-- Flex container to manage the layout -->
     <div class="flex-container">
         <!-- Include Navbar -->
         <div id="navbar"></div>
+        <!-- Spinner Container -->
+        <div id="spinner-container" class="spinner-container">
+            <div class="stylish-spinner"></div>
+        </div>
 
         <!-- Dashboard Content -->
         <div class="container mx-auto mt-12 flex-grow">
@@ -107,17 +139,12 @@
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Show loading spinner and hide main content initially
     document.addEventListener("DOMContentLoaded", function() {
-        const spinner = document.getElementById('spinner');
-        const mainContent = document.getElementById('main-content');
-        
-        // Simulate loading (You can replace this with actual loading logic)
-        setTimeout(() => {
-            spinner.classList.add('hidden');
-            mainContent.classList.remove('hidden');
-        }, 1000);
-    });
+       // Simulate content loading with a timeout
+       setTimeout(function() {
+           document.getElementById("spinner-container").style.display = "none";  // Hide spinner after loading
+       }, 1100); // Adjust the delay based on your requirements
+   });
 
     // Pie Chart Data
     const pieCtx = document.getElementById('pieChart').getContext('2d');

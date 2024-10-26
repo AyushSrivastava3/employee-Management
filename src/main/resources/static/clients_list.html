@@ -1,0 +1,550 @@
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Client List</title>-->
+<!--    <style>-->
+<!--        html, body {-->
+<!--  height: 100%; /* Ensure full height */-->
+<!--  margin: 0; /* Remove default margins */-->
+<!--}-->
+
+<!--body {-->
+<!--  display: flex;-->
+<!--  flex-direction: column; /* Make the body a flex container */-->
+<!--}-->
+
+<!--.container {-->
+<!--  flex-grow: 1; /* Allow the content to expand and fill available space */-->
+<!--}-->
+
+<!--footer {-->
+<!--            margin-top: auto;-->
+<!--        }-->
+<!--         /* Stylish spinner container */-->
+<!--        .spinner-container {-->
+<!--            position: fixed;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100vw;-->
+<!--            height: 100vh;-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            background-color: #ffffff;-->
+<!--            z-index: 1000;-->
+<!--        }-->
+
+<!--        /* Modern Stylish Spinner */-->
+<!--        .stylish-spinner {-->
+<!--            width: 64px;-->
+<!--            height: 64px;-->
+<!--            border: 8px solid rgba(0, 0, 0, 0.1);-->
+<!--            border-left-color: #4f46e5; /* Indigo-500 from Tailwind */-->
+<!--            border-radius: 50%;-->
+<!--            animation: spin 1.2s linear infinite, pulse 1.5s ease-in-out infinite;-->
+<!--        }-->
+
+<!--        /* Spinner Animation */-->
+<!--        @keyframes spin {-->
+<!--            0% {-->
+<!--                transform: rotate(0deg);-->
+<!--            }-->
+<!--            100% {-->
+<!--                transform: rotate(360deg);-->
+<!--            }-->
+<!--        }-->
+
+<!--        /* Pulsating effect */-->
+<!--        @keyframes pulse {-->
+<!--            0%, 100% {-->
+<!--                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);-->
+<!--            }-->
+<!--            50% {-->
+<!--                box-shadow: 0 0 0 20px rgba(79, 70, 229, 0);-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--    <script src="https://cdn.tailwindcss.com"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
+
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />-->
+<!--</head>-->
+<!--<body class="bg-gray-100">-->
+
+<!--&lt;!&ndash; Include Navbar &ndash;&gt;-->
+<!--<div id="navbar"></div>-->
+<!--&lt;!&ndash; Spinner Container &ndash;&gt;-->
+<!--<div id="spinner-container" class="spinner-container">-->
+<!--    <div class="stylish-spinner"></div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Page Heading &ndash;&gt;-->
+<!--&lt;!&ndash; Wrapper to stretch content full width &ndash;&gt;-->
+
+<!--    &lt;!&ndash; Flex container for heading and button &ndash;&gt;-->
+<!--    <div class="flex justify-center items-center mt-4 mb-4 relative">-->
+
+<!--        &lt;!&ndash; Button aligned to the left of the heading &ndash;&gt;-->
+<!--        <div class="mr-auto">-->
+<!--            <button onclick="exportToExcel()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">-->
+<!--                <i class="fas fa-file-excel mr-2"></i>-->
+<!--                Export to Excel-->
+<!--            </button>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; Heading &ndash;&gt;-->
+<!--        <h1 class="text-4xl font-extrabold text-indigo-600 text-center absolute left-1/2 transform -translate-x-1/2">-->
+<!--            Client List-->
+<!--        </h1>-->
+<!--        &lt;!&ndash; Button aligned to the right &ndash;&gt;-->
+<!--        <div class="ml-auto">-->
+<!--            <a href="add_client.html" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">-->
+<!--                <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
+<!--                    <line x1="12" y1="5" x2="12" y2="19"></line>-->
+<!--                    <line x1="5" y1="12" x2="19" y2="12"></line>-->
+<!--                </svg>-->
+<!--                Add New Client-->
+<!--            </a>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--&lt;!&ndash; Client Table &ndash;&gt;-->
+<!--&lt;!&ndash;<section class="container mx-auto mt-6 w-full">&ndash;&gt;-->
+<!--    <div class="overflow-x-auto shadow-md mb-8 rounded-lg w-full">-->
+<!--        <table class="min-w-full bg-white border-collapse border border-gray-300">-->
+<!--            <thead class="bg-gray-200">-->
+<!--            <tr>-->
+<!--                <th class="text-center py-3 px-4 text-gray-600 font-semibold">Client Id</th>-->
+<!--                <th class="text-center py-3 px-4 text-gray-600 font-semibold">Client Name</th>-->
+<!--                <th class="text-center py-3 px-4 text-gray-600 font-semibold">Location</th>-->
+<!--                <th class="text-center py-3 px-4 text-gray-600 font-semibold">Currency</th>-->
+<!--                <th class="text-center py-3 px-4 text-gray-600 font-semibold">Action</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody id="clientTableBody">-->
+<!--            &lt;!&ndash; Client rows will be populated here &ndash;&gt;-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--&lt;!&ndash; Include Footer &ndash;&gt;-->
+<!--<footer id="footer"></footer>-->
+<!--&lt;!&ndash;</section>&ndash;&gt;-->
+<!--<script>-->
+<!--    document.addEventListener("DOMContentLoaded", function() {-->
+<!--       // Simulate content loading with a timeout-->
+<!--       setTimeout(function() {-->
+<!--           document.getElementById("spinner-container").style.display = "none";  // Hide spinner after loading-->
+<!--       }, 1100); // Adjust the delay based on your requirements-->
+<!--   });-->
+
+<!--   fetch('navbar.html')-->
+<!--       .then(response => response.text())-->
+<!--       .then(data => {-->
+<!--           document.getElementById('navbar').innerHTML = data;-->
+<!--       });-->
+
+<!--   fetch('footer.html')-->
+<!--       .then(response => response.text())-->
+<!--       .then(data => {-->
+<!--           document.getElementById('footer').innerHTML = data;-->
+<!--       });-->
+
+<!--   // Function to fetch clients from API-->
+<!--async function fetchClients() {-->
+<!--    try {-->
+<!--        const response = await fetch('http://localhost:8080/api/clients');-->
+<!--        if (!response.ok) {-->
+<!--            throw new Error('Network response was not ok: ' + response.statusText);-->
+<!--        }-->
+
+<!--        // Log raw response to check if it's valid JSON-->
+<!--        const responseText = await response.text();-->
+<!--        console.log('Raw response:', responseText);-->
+
+<!--        // Try parsing it after confirming it's valid-->
+<!--        const clients = JSON.parse(responseText);-->
+
+<!--        const clientTableBody = document.getElementById('clientTableBody');-->
+
+<!--        clients.forEach(client => {-->
+<!--            const row = document.createElement('tr');-->
+<!--            row.classList.add('border-t');-->
+
+<!--            row.innerHTML = `-->
+<!--                <td class="py-3 px-4 text-center">${client.id}</td>-->
+<!--                <td class="py-3 px-4 text-center">${client.clientName}</td>-->
+<!--                <td class="py-3 px-4 text-center">${client.location}</td>-->
+<!--                <td class="py-3 px-4 text-center">${client.currency}</td>-->
+<!--                <td class="py-3 px-4 text-center">-->
+<!--                    <div class="flex justify-center space-x-4">-->
+<!--                        <a href="client_view.html?id=${client.id}" class="text-green-500 hover:text-green-600" title="View">-->
+<!--                            <i class="fas fa-eye fa-lg"></i>-->
+<!--                        </a>-->
+<!--                        <button class="text-red-500 hover:text-red-600" onclick="deleteClient(${client.id})" title="Delete">-->
+<!--                            <i class="fas fa-trash fa-lg"></i>-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--            `;-->
+<!--            clientTableBody.appendChild(row);-->
+<!--        });-->
+<!--    } catch (error) {-->
+<!--        console.error('Error fetching clients:', error);-->
+<!--        Swal.fire({-->
+<!--            icon: 'error',-->
+<!--            title: 'Error',-->
+<!--            text: 'Failed to load clients. Please try again later.'-->
+<!--        });-->
+<!--    }-->
+<!--}-->
+
+
+<!--   // Function to delete a client with Swal.confirmation and response alerts-->
+<!--   async function deleteClient(clientId) {-->
+<!--       const confirmation = await Swal.fire({-->
+<!--           title: 'Are you sure?',-->
+<!--           text: "You won't be able to revert this!",-->
+<!--           icon: 'warning',-->
+<!--           showCancelButton: true,-->
+<!--           confirmButtonColor: '#3085d6',-->
+<!--           cancelButtonColor: '#d33',-->
+<!--           confirmButtonText: 'Yes, delete it!'-->
+<!--       });-->
+
+<!--       if (confirmation.isConfirmed) {-->
+<!--           try {-->
+<!--               const response = await fetch(`http://localhost:8080/api/clients/${clientId}`, { method: 'DELETE' });-->
+<!--               if (!response.ok) {-->
+<!--                   throw new Error('Network response was not ok: ' + response.statusText);-->
+<!--               }-->
+<!--               Swal.fire({-->
+<!--                   icon: 'success',-->
+<!--                   title: 'Deleted!',-->
+<!--                   text: 'The client has been deleted.',-->
+<!--                   timer: 1500-->
+<!--               }).then(() => {-->
+<!--                   location.reload(); // Reload the page to update the client list-->
+<!--               });-->
+<!--           } catch (error) {-->
+<!--               console.error('Error deleting client:', error);-->
+<!--               Swal.fire({-->
+<!--                   icon: 'error',-->
+<!--                   title: 'Error',-->
+<!--                   text: 'Failed to delete client. Please try again later.'-->
+<!--               });-->
+<!--           }-->
+<!--       }-->
+<!--   }-->
+
+<!--   // Function to export data to Excel with Swal for success and error handling-->
+<!--   function exportToExcel() {-->
+<!--       fetch(`http://localhost:8080/api/clients/clients/export`, {-->
+<!--           method: 'GET',-->
+<!--           headers: {-->
+<!--               'Content-Type': 'application/json'-->
+<!--           }-->
+<!--       })-->
+<!--       .then(response => response.blob())-->
+<!--       .then(blob => {-->
+<!--           const url = window.URL.createObjectURL(blob);-->
+<!--           const a = document.createElement('a');-->
+<!--           a.href = url;-->
+<!--           a.download = 'client_export.xlsx'; // Set the file name for the export-->
+<!--           a.click();-->
+<!--           window.URL.revokeObjectURL(url);-->
+<!--           Swal.fire({-->
+<!--               icon: 'success',-->
+<!--               title: 'Export Successful!',-->
+<!--               text: 'Client data has been exported to Excel.',-->
+<!--               timer: 1500-->
+<!--           });-->
+<!--       })-->
+<!--       .catch(error => {-->
+<!--           console.error('Error exporting profile data:', error);-->
+<!--           Swal.fire({-->
+<!--               icon: 'error',-->
+<!--               title: 'Error',-->
+<!--               text: 'Failed to export data. Please try again later.'-->
+<!--           });-->
+<!--       });-->
+<!--   }-->
+
+<!--   // Fetch clients on page load-->
+<!--   window.onload = fetchClients;-->
+
+<!--</script>-->
+
+<!--<script src="navbar.js"></script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        /* Styles for full-height layout and stylish spinner (omitted for brevity) */
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+            html, body {
+      height: 100%; /* Ensure full height */
+      margin: 0; /* Remove default margins */
+    }
+
+    body {
+      display: flex;
+      flex-direction: column; /* Make the body a flex container */
+    }
+
+    .container {
+      flex-grow: 1; /* Allow the content to expand and fill available space */
+    }
+
+    footer {
+                margin-top: auto;
+            }
+             /* Stylish spinner container */
+            .spinner-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #ffffff;
+                z-index: 1000;
+            }
+
+            /* Modern Stylish Spinner */
+            .stylish-spinner {
+                width: 64px;
+                height: 64px;
+                border: 8px solid rgba(0, 0, 0, 0.1);
+                border-left-color: #4f46e5; /* Indigo-500 from Tailwind */
+                border-radius: 50%;
+                animation: spin 1.2s linear infinite, pulse 1.5s ease-in-out infinite;
+            }
+
+            /* Spinner Animation */
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            /* Pulsating effect */
+            @keyframes pulse {
+                0%, 100% {
+                    box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+                }
+                50% {
+                    box-shadow: 0 0 0 20px rgba(79, 70, 229, 0);
+                }
+            }
+        </style>
+
+</head>
+<body class="bg-gray-100">
+
+<!-- Include Navbar -->
+<div id="navbar"></div>
+<!-- Spinner Container -->
+<div id="spinner-container" class="spinner-container">
+    <div class="stylish-spinner"></div>
+</div>
+
+<!-- Page Heading -->
+<div class="flex justify-center items-center mt-4 mb-4 relative">
+    <div class="mr-auto">
+        <button onclick="exportToExcel()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+            <i class="fas fa-file-excel mr-2"></i>
+            Export to Excel
+        </button>
+    </div>
+    <h1 class="text-4xl font-extrabold text-indigo-600 text-center absolute left-1/2 transform -translate-x-1/2">
+        Client List
+    </h1>
+    <div class="ml-auto">
+        <a href="add_client.html" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+            <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Add New Client
+        </a>
+    </div>
+</div>
+
+<!-- Client Table -->
+<div class="overflow-x-auto shadow-md mb-8 rounded-lg w-full">
+    <table class="min-w-full bg-white border-collapse border border-gray-300">
+        <thead class="bg-gray-200">
+        <tr>
+            <th class="text-center py-3 px-4 text-gray-600 font-semibold">Client Id</th>
+            <th class="text-center py-3 px-4 text-gray-600 font-semibold">Client Name</th>
+            <th class="text-center py-3 px-4 text-gray-600 font-semibold">Location</th>
+            <th class="text-center py-3 px-4 text-gray-600 font-semibold">Currency</th>
+            <th class="text-center py-3 px-4 text-gray-600 font-semibold">Action</th>
+        </tr>
+        </thead>
+        <tbody id="clientTableBody">
+        <!-- Client rows will be populated here -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal for month/year input -->
+<div id="resourceModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 class="text-xl font-semibold mb-4">Select Month & Year</h2>
+        <input type="month" id="yearMonthInput" class="border border-gray-300 rounded p-2 mb-4 w-full" />
+        <button onclick="fetchResources()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded w-full">
+            View Resources
+        </button>
+    </div>
+</div>
+
+<footer id="footer"></footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+       setTimeout(function() {
+           document.getElementById("spinner-container").style.display = "none";
+       }, 1100);
+    });
+    fetch('navbar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar').innerHTML = data;
+        });
+
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+
+    async function fetchClients() {
+        try {
+            const response = await fetch('http://localhost:8080/api/clients');
+            if (!response.ok) throw new Error('Network response was not ok');
+
+            const clients = await response.json();
+            const clientTableBody = document.getElementById('clientTableBody');
+            clients.forEach(client => {
+                const row = document.createElement('tr');
+                row.classList.add('border-t');
+                row.innerHTML = `
+                    <td class="py-3 px-4 text-center">${client.id}</td>
+                    <td class="py-3 px-4 text-center">${client.clientName}</td>
+                    <td class="py-3 px-4 text-center">${client.location}</td>
+                    <td class="py-3 px-4 text-center">${client.currency}</td>
+                    <td class="py-3 px-4 text-center">
+                        <div class="flex justify-center space-x-4">
+                            <a href="client_view.html?id=${client.id}" class="text-green-500 hover:text-green-600" title="View">
+                                <i class="fas fa-eye fa-lg"></i>
+                            </a>
+                            <button onclick="showResourceModal(${client.id})" class="text-blue-500 hover:text-blue-600" title="View Resources">
+                                <i class="fas fa-users fa-lg"></i>
+                            </button>
+                            <button onclick="deleteClient(${client.id})" class="text-red-500 hover:text-red-600" title="Delete">
+                                <i class="fas fa-trash fa-lg"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                clientTableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error fetching clients:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to load clients. Please try again later.'
+            });
+        }
+    }
+
+    function showResourceModal(clientId) {
+        document.getElementById("resourceModal").style.display = "flex";
+        document.getElementById("resourceModal").dataset.clientId = clientId;
+    }
+
+    document.querySelector(".close").onclick = function() {
+        document.getElementById("resourceModal").style.display = "none";
+    }
+
+    async function fetchResources() {
+        const clientId = document.getElementById("resourceModal").dataset.clientId;
+        const yearMonth = document.getElementById("yearMonthInput").value;
+
+        if (!yearMonth) {
+            Swal.fire({ icon: 'warning', title: 'Please select a month and year.' });
+            return;
+        }
+
+        window.location.href = `resources.html?clientId=${clientId}&yearMonth=${yearMonth}`;
+    }
+
+    window.onload = fetchClients;
+</script>
+<script src="navbar.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.hidden {
+    display: none;
+}
+
+#loading {
+    text-align: center;
+    margin-top: 10px;
+}
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Generate Invoice</h1>
+
+    <!-- Client Selection Form -->
+    <form id="invoiceForm">
+        <label for="clientId">Select Client:</label>
+        <select id="clientId" required>
+            <option value="">-- Select a client --</option>
+            <!-- Assuming you have a backend endpoint to fetch clients -->
+            <!-- Example: populate this with server response -->
+            <option value="1">Client 1</option>
+            <option value="2">Client 2</option>
+            <option value="3">Client 3</option>
+        </select>
+
+        <button type="button" id="generateBtn">Generate Invoice</button>
+    </form>
+
+    <div id="loading" class="hidden">Generating invoice...</div> <!-- Optional loading message -->
+</div>
+
+<script>
+    document.getElementById('generateBtn').addEventListener('click', async () => {
+        const clientId = document.getElementById('clientId').value;
+
+        if (!clientId) {
+            alert('Please select a client.');
+            return;
+        }
+
+        // Show loading spinner (optional)
+        document.getElementById('loading').classList.remove('hidden');
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/invoices/generate?clientId=${clientId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (response.ok) {
+                const blob = await response.blob();  // Convert response to blob (PDF)
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `invoice_${clientId}_${new Date().toISOString().slice(0, 7)}.pdf`;  // File name for download
+                document.body.appendChild(a);
+                a.click();  // Trigger download
+                a.remove();  // Clean up
+            } else {
+                alert('Error generating invoice. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error generating invoice.');
+        } finally {
+            // Hide loading spinner (optional)
+            document.getElementById('loading').classList.add('hidden');
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Leave Request</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+<div class="max-w-lg mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-2xl font-bold mb-6">Submit Leave Request</h2>
+    <form id="leaveForm" class="space-y-4">
+        <div>
+            <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
+            <input type="date" id="startDate" name="startDate" required
+                   class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+
+        <div>
+            <label for="endDate" class="block text-sm font-medium text-gray-700">End Date</label>
+            <input type="date" id="endDate" name="endDate" required
+                   class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+
+        <div>
+            <label for="type" class="block text-sm font-medium text-gray-700">Leave Type</label>
+            <select id="type" name="type"
+                    class="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="Sick">Sick</option>
+                <option value="Vacation">Vacation</option>
+                <!-- Add more leave types as needed -->
+            </select>
+        </div>
+
+        <div>
+            <label for="reason" class="block text-sm font-medium text-gray-700">Reason</label>
+            <textarea id="reason" name="reason" rows="4"
+                      class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+        </div>
+
+        <div>
+            <button type="submit"
+                    class="w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                Submit Leave Request
+            </button>
+        </div>
+    </form>
+    <div id="message" class="mt-4 text-green-600"></div>
+</div>
+
+<script>
+    document.getElementById('leaveForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const leaveData = {
+            startDate: document.getElementById('startDate').value,
+            endDate: document.getElementById('endDate').value,
+            type: document.getElementById('type').value,
+            reason: document.getElementById('reason').value
+        };
+
+        fetch('http://localhost:8080/api/leave', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(leaveData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('message').innerText = "Leave Request Submitted Successfully!";
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            document.getElementById('message').innerText = "Failed to Submit Leave Request";
+        });
+    });
+</script>
+</body>
+</html>

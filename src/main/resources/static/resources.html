@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        html, body {
+  height: 100%; /* Ensure full height */
+  margin: 0; /* Remove default margins */
+}
+
+body {
+  display: flex;
+  flex-direction: column; /* Make the body a flex container */
+}
+
+.container {
+  flex-grow: 1; /* Allow the content to expand and fill available space */
+}
+
+footer {
+            margin-top: auto;
+        }
+       /* Stylish spinner container */
+        .spinner-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            z-index: 1000;
+        }
+
+        /* Modern Stylish Spinner */
+        .stylish-spinner {
+            width: 64px;
+            height: 64px;
+            border: 8px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #4f46e5; /* Indigo-500 from Tailwind */
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite, pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Spinner Animation */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Pulsating effect */
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 20px rgba(79, 70, 229, 0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+<div id="navbar"></div>
+<div id="spinner-container" class="spinner-container">
+    <div class="stylish-spinner"></div>
+</div>
+<div class="w-full mx-auto bg-white p-2 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-semibold text-center text-gray-800 mb-4">Employee Resource Details</h1>
+    <p id="clientInfo" class="text-center text-gray-600 mb-6"></p>
+
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border rounded-lg">
+            <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+            <tr>
+                <th class="py-3 px-6 text-left">ID</th>
+                <th class="py-3 px-6 text-left">Employee Name</th>
+                <th class="py-3 px-6 text-left">Hourly Rate ($)</th>
+                <th class="py-3 px-6 text-left">Total Billable Hours</th>
+            </tr>
+            </thead>
+            <tbody id="resourceTableBody" class="text-gray-700 text-sm font-light">
+            <!-- Employee rows will be populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <p id="errorMessage" class="text-center text-red-500 mt-6"></p>
+</div>
+<footer id="footer"></footer>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Simulate content loading with a timeout
+        setTimeout(function() {
+            document.getElementById("spinner-container").style.display = "none";  // Hide spinner after loading
+        }, 1100); // Adjust the delay based on your requirements
+    });
+    fetch('navbar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar').innerHTML = data;
+        });
+
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get clientId and yearMonth from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const clientId = urlParams.get("clientId");
+        const yearMonth = urlParams.get("yearMonth");
+
+        // Display client and month info
+        document.getElementById("clientInfo").innerText = `Client ID: ${clientId}, Month: ${yearMonth}`;
+
+        // Function to fetch and display resources
+        async function fetchResourceDetails() {
+            try {
+                const response = await fetch(`http://localhost:8080/employeeClientInfo/employeesForClientInMonth?clientId=${clientId}&yearMonth=${yearMonth}`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch employee data.");
+                }
+                const employees = await response.json();
+
+                // Populate the table
+                const tableBody = document.getElementById("resourceTableBody");
+                tableBody.innerHTML = "";
+
+                if (employees.length === 0) {
+                    document.getElementById("errorMessage").innerText = "No employees found for this client in the specified month.";
+                    return;
+                }
+
+                employees.forEach(employee => {
+                    const row = document.createElement("tr");
+                    row.classList.add("border-b", "border-gray-200", "hover:bg-gray-100");
+
+                    row.innerHTML = `
+                        <td class="py-3 px-6 text-left">${employee.id}</td>
+                        <td class="py-3 px-6 text-left">${employee.employeeName}</td>
+                        <td class="py-3 px-6 text-left">${employee.hourlyRate}</td>
+                        <td class="py-3 px-6 text-left">${employee.totalBillableHours}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                document.getElementById("errorMessage").innerText = error.message;
+            }
+        }
+
+        fetchResourceDetails();
+    });
+</script>
+<script src="navbar.js"></script>
+</body>
+</html>

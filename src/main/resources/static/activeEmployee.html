@@ -157,7 +157,7 @@ footer {
     // Fetch and display all employees initially
     async function fetchAllEmployees() {
         try {
-            const response = await fetch("http://localhost:8080/employees");
+            const response = await fetch("http://3.6.108.76:8080/employees");
             const employees = await response.json();
             displayEmployees(employees);
         } catch (error) {
@@ -172,7 +172,7 @@ footer {
         const month = document.getElementById("monthSelect").value;
 
         try {
-            const response = await fetch(`http://localhost:8080/employees/employees/active?year=${year}&month=${month}`);
+            const response = await fetch(`http://3.6.108.76:8080/employees/employees/active?year=${year}&month=${month}`);
             const employees = await response.json();
             displayEmployees(employees);
         } catch (error) {

@@ -78,7 +78,7 @@
     // Function to send attendance data to backend (simplified for demonstration)
     async function markAttendance(isClockingIn, checkInTime, checkOutTime) {
         try {
-            const response = await fetch('http://localhost:8080/api/attendance', {
+            const response = await fetch('http://3.6.108.76:8080/api/attendance', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

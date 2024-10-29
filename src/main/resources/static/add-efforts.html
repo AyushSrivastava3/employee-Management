@@ -132,7 +132,7 @@ footer {
     const updateDaysRequest = { leaveDays, holidays, nonBillableDays };
 
     try {
-        const response = await fetch(`http://localhost:8080/employees/updateDays?employeeId=${employeeId}`, {
+        const response = await fetch(`http://3.6.108.76:8080/employees/updateDays?employeeId=${employeeId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updateDaysRequest)

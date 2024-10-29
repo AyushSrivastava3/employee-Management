@@ -98,7 +98,7 @@ button:hover {
         document.getElementById('loading').classList.remove('hidden');
 
         try {
-            const response = await fetch(`http://localhost:8080/api/invoices/generate?clientId=${clientId}`, {
+            const response = await fetch(`http://3.6.108.76:8080/api/invoices/generate?clientId=${clientId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -158,7 +158,7 @@
         const invoiceTableBody = document.getElementById('invoiceTableBody');
 
         // Fetch invoices from the backend
-        fetch('http://localhost:8080/api/invoices/all')
+        fetch('http://3.6.108.76:8080/api/invoices/all')
             .then(response => response.json())
             .then(data => {
                 populateInvoiceTable(data);  // Populate the table with data
@@ -206,7 +206,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`http://localhost:8080/api/invoices/${invoiceId}`, {
+                    fetch(`http://3.6.108.76:8080/api/invoices/${invoiceId}`, {
                         method: 'DELETE'
                     })
                     .then(response => {
@@ -218,7 +218,7 @@
                             );
                             // Refresh the invoice list after deletion
                             invoiceTableBody.innerHTML = '';
-                            fetch('http://localhost:8080/api/invoices/all')
+                            fetch('http://3.6.108.76:8080/api/invoices/all')
                                 .then(response => response.json())
                                 .then(data => {
                                     populateInvoiceTable(data);  // Re-populate the table

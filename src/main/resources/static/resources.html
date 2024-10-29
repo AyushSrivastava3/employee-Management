@@ -126,7 +126,7 @@ footer {
         // Function to fetch and display resources
         async function fetchResourceDetails() {
             try {
-                const response = await fetch(`http://localhost:8080/employeeClientInfo/employeesForClientInMonth?clientId=${clientId}&yearMonth=${yearMonth}`);
+                const response = await fetch(`http://3.6.108.76:8080/employeeClientInfo/employeesForClientInMonth?clientId=${clientId}&yearMonth=${yearMonth}`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch employee data.");
                 }

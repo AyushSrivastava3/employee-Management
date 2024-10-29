@@ -61,7 +61,7 @@ footer {
     // Fetch and display pending invoices
     async function fetchPendingInvoices() {
         try {
-            const response = await fetch('http://localhost:8080/api/invoices/pending'); // Replace with your actual API URL
+            const response = await fetch('http://3.6.108.76:8080/api/invoices/pending'); // Replace with your actual API URL
             if (!response.ok) {
                 throw new Error('Failed to fetch invoices');
             }
@@ -113,7 +113,7 @@ footer {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const response = await fetch(`http://localhost:8080/api/invoices/${invoiceId}`, { method: 'DELETE' }); // Replace with your actual API URL
+                    const response = await fetch(`http://3.6.108.76:8080/api/invoices/${invoiceId}`, { method: 'DELETE' }); // Replace with your actual API URL
                     if (!response.ok) {
                         throw new Error('Failed to delete invoice');
                     }

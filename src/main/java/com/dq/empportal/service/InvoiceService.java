@@ -409,7 +409,7 @@ public class InvoiceService {
             int nonBillableDaysWithinPeriod=employee.getEmployee().getNonBillableDaysWithinPeriod(startDate,endDate);
 
             // Assuming 9 hours per day for leaves, holidays, and non-billable days, deduct from the total billable hours
-            int hoursToDeduct = (leaveDaysWithinPeriod + holidaysWithinPeriod + nonBillableDaysWithinPeriod) * 9;
+            int hoursToDeduct = (leaveDaysWithinPeriod + holidaysWithinPeriod + nonBillableDaysWithinPeriod) * employee.getWorkingHours();
             totalBillableHours -= hoursToDeduct;
 
             // Ensure that billable hours are not negative

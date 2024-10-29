@@ -32,11 +32,11 @@ public class EmployeeClientInfoController {
             @PathVariable Integer clientId,
             @PathVariable Integer employeeId,
             @RequestParam Integer hourlyRate,
-
+            @RequestParam Integer workingHour,
             @RequestParam LocalDate startDate,
             @RequestParam(required = false) LocalDate endDate) {
 
-        employeeClientService.assignEmployeeToClient(employeeId, clientId, hourlyRate, startDate, endDate);
+        employeeClientService.assignEmployeeToClient(employeeId, clientId, hourlyRate,workingHour, startDate, endDate);
         return "Employee assigned to client successfully!";
     }
 

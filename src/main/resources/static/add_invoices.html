@@ -152,7 +152,7 @@
    // Fetch clients for the dropdown
    async function fetchClients() {
        try {
-           const response = await fetch('http://localhost:8080/api/clients');
+           const response = await fetch('http://3.6.108.76:8080/api/clients');
            if (!response.ok) throw new Error('Network response was not ok');
            const clients = await response.json();
            const clientDropdown = document.getElementById('clientDropdown');
@@ -195,7 +195,7 @@
        };
 
        try {
-           const response = await fetch('http://localhost:8080/api/invoices/create', {
+           const response = await fetch('http://3.6.108.76:8080/api/invoices/create', {
                method: 'POST',
                headers: {
                    'Content-Type': 'application/json'

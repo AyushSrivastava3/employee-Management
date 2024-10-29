@@ -154,7 +154,7 @@
 <!--   // Function to fetch clients from API-->
 <!--async function fetchClients() {-->
 <!--    try {-->
-<!--        const response = await fetch('http://localhost:8080/api/clients');-->
+<!--        const response = await fetch('http://3.6.108.76:8080/api/clients');-->
 <!--        if (!response.ok) {-->
 <!--            throw new Error('Network response was not ok: ' + response.statusText);-->
 <!--        }-->
@@ -215,7 +215,7 @@
 
 <!--       if (confirmation.isConfirmed) {-->
 <!--           try {-->
-<!--               const response = await fetch(`http://localhost:8080/api/clients/${clientId}`, { method: 'DELETE' });-->
+<!--               const response = await fetch(`http://3.6.108.76:8080/api/clients/${clientId}`, { method: 'DELETE' });-->
 <!--               if (!response.ok) {-->
 <!--                   throw new Error('Network response was not ok: ' + response.statusText);-->
 <!--               }-->
@@ -240,7 +240,7 @@
 
 <!--   // Function to export data to Excel with Swal for success and error handling-->
 <!--   function exportToExcel() {-->
-<!--       fetch(`http://localhost:8080/api/clients/clients/export`, {-->
+<!--       fetch(`http://3.6.108.76:8080/api/clients/clients/export`, {-->
 <!--           method: 'GET',-->
 <!--           headers: {-->
 <!--               'Content-Type': 'application/json'-->
@@ -482,7 +482,7 @@
 
     async function fetchClients() {
         try {
-            const response = await fetch('http://localhost:8080/api/clients');
+            const response = await fetch('http://3.6.108.76:8080/api/clients');
             if (!response.ok) throw new Error('Network response was not ok');
 
             const clients = await response.json();

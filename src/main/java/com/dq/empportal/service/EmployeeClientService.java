@@ -34,7 +34,7 @@ public class EmployeeClientService {
     private EmployeeClientInfoRepository employeeClientInfoRepository;
 
     @Transactional
-    public void assignEmployeeToClient(Integer employeeId, Integer clientId, Integer hourlyRate, LocalDate startDate, LocalDate endDate) {
+    public void assignEmployeeToClient(Integer employeeId, Integer clientId, Integer hourlyRate,Integer workingHour, LocalDate startDate, LocalDate endDate) {
         // Fetch the employee and client by their IDs
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + employeeId));
@@ -47,7 +47,7 @@ public class EmployeeClientService {
         employeeClientInfo.setEmployee(employee);
         employeeClientInfo.setClient(client);
         employeeClientInfo.setHourlyRate(hourlyRate);
-
+        employeeClientInfo.setWorkingHours(workingHour);
         employeeClientInfo.setJoiningDateToClient(startDate);
         if (endDate != null) {
 //            employeeClientInfo.endDate(endDate);

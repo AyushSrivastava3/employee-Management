@@ -163,7 +163,7 @@ fetch('navbar.html')
         // Function to fetch and display the employees
         async function fetchEmployees() {
             try {
-                const response = await fetch('http://localhost:8080/employees');
+                const response = await fetch('http://3.6.108.76:8080/employees');
                 const employees = await response.json();
 
                 const tableBody = document.getElementById('employeeTableBody');

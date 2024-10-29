@@ -31,7 +31,7 @@
 ////          profileDropdown.classList.remove('hidden');
 ////        } else {
 ////          // If not logged in via token, fetch user info from session
-////          fetch("http://localhost:8080/user/current-user")
+////          fetch("http://3.6.108.76:8080/user/current-user")
 ////            .then((response) => {
 ////              if (response.ok) {
 ////                return response.json();
@@ -70,7 +70,7 @@
 ////                  localStorage.removeItem('username');
 ////
 ////                  // Invalidate OAuth2 session by hitting the logout endpoint
-////                  fetch('http://localhost:8080/user/logout', {
+////                  fetch('http://3.6.108.76:8080/user/logout', {
 ////                      method: 'POST', // Assuming your logout endpoint is a POST request
 ////                      credentials: 'include' // Include cookies for session management
 ////                  })
@@ -129,7 +129,7 @@
 //        loginRegisterLink.style.display = 'none';
 //        profileDropdown.classList.remove('hidden');
 //      } else {
-//        fetch("http://localhost:8080/user/current-user")
+//        fetch("http://3.6.108.76:8080/user/current-user")
 //          .then((response) => {
 //            if (response.ok) {
 //              return response.json();
@@ -157,7 +157,7 @@
 //          localStorage.removeItem('token');
 //          localStorage.removeItem('isLoggedIn');
 //          localStorage.removeItem('username');
-//          fetch('http://localhost:8080/user/logout', {
+//          fetch('http://3.6.108.76:8080/user/logout', {
 //            method: 'POST',
 //            credentials: 'include'
 //          }).then(response => {
@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
           profileDropdown.classList.remove('hidden');
         } else {
           // If not logged in via token, fetch user info from session
-          fetch("http://localhost:8080/user/current-user")
+          fetch("http://3.6.108.76:8080/user/current-user")
             .then((response) => {
               if (response.ok) {
                 return response.json();
@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   localStorage.removeItem('username');
 
                   // Invalidate OAuth2 session by hitting the logout endpoint
-                  fetch('http://localhost:8080/user/logout', {
+                  fetch('http://3.6.108.76:8080/user/logout', {
                       method: 'POST', // Assuming your logout endpoint is a POST request
                       credentials: 'include' // Include cookies for session management
                   })
@@ -295,11 +295,11 @@ document.addEventListener("DOMContentLoaded", function () {
                       if (response.ok) {
                           console.log('Logged out successfully from OAuth2 session.');
                           // Redirect to the home page or login page
-                          window.location.href = 'index.html';
+                          window.location.href = 'login.html';
                       } else {
                           console.error('Failed to log out from OAuth2 session.');
                           // Handle logout failure if necessary
-                          window.location.href = 'index.html'; // Redirect to home
+                          window.location.href = 'login.html'; // Redirect to home
                       }
                   })
                   .catch(error => {

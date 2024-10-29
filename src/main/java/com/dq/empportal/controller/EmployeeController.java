@@ -1,5 +1,4 @@
 package com.dq.empportal.controller;
-
 import com.dq.empportal.model.Employee;
 import com.dq.empportal.service.EmployeeService;
 import com.dq.empportal.dtos.UpdateDaysRequest;
@@ -7,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -83,5 +81,6 @@ public class EmployeeController {
         Employee updatedInfo = employeeService.removeDays(employeeId, request.getLeaveDays(), request.getHolidays(), request.getNonBillableDays());
         return ResponseEntity.ok(updatedInfo);
     }
+
 }
 

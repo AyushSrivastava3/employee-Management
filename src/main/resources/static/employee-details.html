@@ -183,7 +183,7 @@
 
     async function fetchEmployeeDetails() {
         try {
-            const response = await fetch(`http://localhost:8080/employees/${employeeId}`);
+            const response = await fetch(`http://3.6.108.76:8080/employees/${employeeId}`);
             if (!response.ok) throw new Error('Employee not found');
             const employee = await response.json();
 
@@ -264,7 +264,7 @@
         };
 
         try {
-            const response = await fetch(`http://localhost:8080/employees/${employeeId}`, {
+            const response = await fetch(`http://3.6.108.76:8080/employees/${employeeId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedEmployee),

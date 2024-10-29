@@ -127,7 +127,7 @@
 <!--    // Function to fetch client details using the client ID from the URL-->
 <!--    async function fetchClientDetails(clientId) {-->
 <!--        try {-->
-<!--            const response = await fetch(`http://localhost:8080/api/clients/${clientId}`);-->
+<!--            const response = await fetch(`http://3.6.108.76:8080/api/clients/${clientId}`);-->
 <!--            if (!response.ok) {-->
 <!--                throw new Error('Network response was not ok: ' + response.statusText);-->
 <!--            }-->
@@ -183,7 +183,7 @@
 <!--        };-->
 
 <!--        try {-->
-<!--            const response = await fetch(`http://localhost:8080/api/clients/${clientId}`, {-->
+<!--            const response = await fetch(`http://3.6.108.76:8080/api/clients/${clientId}`, {-->
 <!--                method: 'PUT',-->
 <!--                headers: { 'Content-Type': 'application/json' },-->
 <!--                body: JSON.stringify(updatedClient)-->
@@ -227,7 +227,7 @@
     // Function to fetch client details using the client ID from the URL
     async function fetchClientDetails(clientId) {
         try {
-            const response = await fetch(`http://localhost:8080/api/clients/${clientId}`);
+            const response = await fetch(`http://3.6.108.76:8080/api/clients/${clientId}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok: ' + response.statusText);
             }
@@ -293,7 +293,7 @@
         };
 
         try {
-            const response = await fetch(`http://localhost:8080/api/clients/${clientId}`, {
+            const response = await fetch(`http://3.6.108.76:8080/api/clients/${clientId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedClient)

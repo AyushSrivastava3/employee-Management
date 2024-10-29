@@ -145,18 +145,18 @@ public class ClientController {
         return clientService.getClientsCreatedInWeek();
     }
 
-    @PostMapping("/{clientId}/assign-employee/{employeeId}")
-    public String assignEmployeeToClient(
-            @PathVariable Integer clientId,
-            @PathVariable Integer employeeId,
-            @RequestParam Integer hourlyRate,
-
-            @RequestParam LocalDate startDate,
-            @RequestParam(required = false) LocalDate endDate) {
-
-        employeeClientService.assignEmployeeToClient(employeeId, clientId, hourlyRate, startDate, endDate);
-        return "Employee assigned to client successfully!";
-    }
+//    @PostMapping("/{clientId}/assign-employee/{employeeId}")
+//    public String assignEmployeeToClient(
+//            @PathVariable Integer clientId,
+//            @PathVariable Integer employeeId,
+//            @RequestParam Integer hourlyRate,
+//
+//            @RequestParam LocalDate startDate,
+//            @RequestParam(required = false) LocalDate endDate) {
+//
+//        employeeClientService.assignEmployeeToClient(employeeId, clientId, hourlyRate, startDate, endDate);
+//        return "Employee assigned to client successfully!";
+//    }
 
 
 }

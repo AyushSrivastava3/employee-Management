@@ -185,7 +185,7 @@ body, html {
    // Function to fetch client details by ID
    async function fetchClientDetails(clientId) {
        try {
-           const response = await fetch(`http://localhost:8080/api/clients/${clientId}`); // Replace with your API URL
+           const response = await fetch(`http://3.6.108.76:8080/api/clients/${clientId}`); // Replace with your API URL
            if (!response.ok) {
                throw new Error('Network response was not ok: ' + response.statusText);
            }
@@ -228,7 +228,7 @@ body, html {
 <!--        }-->
 
 <!--        try {-->
-<!--            const response = await fetch('http://localhost:8080/api/invoices/generate', {-->
+<!--            const response = await fetch('http://3.6.108.76:8080/api/invoices/generate', {-->
 <!--                method: 'POST',-->
 <!--                headers: {-->
 <!--                    'Content-Type': 'application/x-www-form-urlencoded'-->
@@ -289,7 +289,7 @@ body, html {
 
 async function generateInvoice(clientId, year, month) {
     const yearMonth = `${year}-${month}`; // Format year and month as YYYY-MM
-    const url = `http://localhost:8080/api/invoices/generate?yearMonth=${yearMonth}&clientId=${clientId}`;
+    const url = `http://3.6.108.76:8080/api/invoices/generate?yearMonth=${yearMonth}&clientId=${clientId}`;
 
     try {
         const response = await fetch(url, {
@@ -340,7 +340,7 @@ async function generateInvoice(clientId, year, month) {
 
 <!--       if (confirm('Are you sure you want to delete this client?')) {-->
 <!--           try {-->
-<!--               const response = await fetch(`http://localhost:8080/api/clients/${clientId}`, { method: 'DELETE' });-->
+<!--               const response = await fetch(`http://3.6.108.76:8080/api/clients/${clientId}`, { method: 'DELETE' });-->
 <!--               if (!response.ok) {-->
 <!--                   throw new Error('Network response was not ok: ' + response.statusText);-->
 <!--               }-->
@@ -370,7 +370,7 @@ async function generateInvoice(clientId, year, month) {
        }).then(async (result) => {
            if (result.isConfirmed) {
                try {
-                   const response = await fetch(`http://localhost:8080/api/clients/${clientId}`, { method: 'DELETE' });
+                   const response = await fetch(`http://3.6.108.76:8080/api/clients/${clientId}`, { method: 'DELETE' });
                    if (!response.ok) {
                        throw new Error('Network response was not ok: ' + response.statusText);
                    }

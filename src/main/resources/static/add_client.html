@@ -189,7 +189,7 @@ footer {
         formData.append('file', file);  // Append the file to FormData
 
         try {
-            const response = await fetch('http://localhost:8080/api/clients/clients/import', {
+            const response = await fetch('http://3.6.108.76:8080/api/clients/clients/import', {
                 method: 'POST',
                 body: formData  // Send the formData with the file
             });
@@ -239,7 +239,7 @@ footer {
 
         try {
             // Make the API request to add the new client
-            const response = await fetch('http://localhost:8080/api/clients', {
+            const response = await fetch('http://3.6.108.76:8080/api/clients', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -20,17 +20,6 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
-//    private String clientName;
-//    private Integer clientId;
-//    private String invoiceNumber;
-//    private String invoiceValue;
-//    private String currency;
-//    private String month;
-//    private LocalDate raisedOn;
-//    private String timeline;
-//    private LocalDate targetDate;
-//    private String createdBy;
-//    private LocalDate createdDate;
 
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
@@ -38,21 +27,28 @@ public class Invoice {
 
     private LocalDate startDate;
     private LocalDate endDate;
-    private Double totalAmount; // Total amount for the invoice
+    private String totalAmount;
+    private Double cgst;
+    private Double sgst;
+    private Double igst;
+    private String totalAmountAfterGst;
+    private String totalAmountAfterGstInWords;
+    private String inInr;
+    private String currency;// Total amount for the invoice
     private String status;      // e.g., "Paid", "Unpaid"
-//    @ManyToMany
-//    @JoinTable(name = "invoice_employees")
-//    private List<Employee> employees = new ArrayList<>();
-@ManyToMany
-private List<EmployeeClientInfo> employeeClientInfos = new ArrayList<>();
+    private String transactionId;
+    private String month;
+    @ManyToMany
+    private List<EmployeeClientInfo> employeeClientInfos = new ArrayList<>();
+    @Column(nullable = false, unique = true)
+    private String invoiceNo; // Unique invoice number with dynamic formatting
 
-    // Clear all employee associations
-//    public void clearEmployees() {
-//        this.employees.clear();
-//    }
-//    // Add employees to the invoice
-//    public void addEmployee(Employee employee) {
-//        this.employees.add(employee);
-//    }
+    @Column(nullable = false)
+    private LocalDate dueDate; // Invoice due date (60 days after raise date)
 
+    @Column(length = 500)
+    private String comments; // Optional comments
+
+    @Column(nullable = false)
+    private LocalDate raisedDate;
 }

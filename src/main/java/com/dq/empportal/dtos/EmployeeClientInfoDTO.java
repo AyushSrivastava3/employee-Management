@@ -18,4 +18,5 @@ public class EmployeeClientInfoDTO {
     private List<LocalDate> leaveDays;
     private List<LocalDate> holidays;
     private List<LocalDate> nonBillableDays;
+    private List<LocalDate> weekendDays;
 }

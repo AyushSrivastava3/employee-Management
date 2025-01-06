@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Invoice</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gray-100">
+<div id="navbar"></div>
+<!-- Spinner Container -->
+<!-- Spinner Container -->
+<div id="spinner-container" class="spinner-container">
+    <div class="stylish-spinner"></div>
+</div>
+
+<div class="w-full mx-auto bg-white p-2 rounded-lg shadow-lg">
+    <!-- Page Header -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-4xl font-bold text-gray-800">Create New Invoice</h1>
+        <a href="invoices_list.html" class="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-500 transition">
+            Back to Invoice List
+        </a>
+    </div>
+
+    <!-- Form Container -->
+    <div class="bg-white rounded-lg shadow-lg p-8">
+        <form id="create-invoice-form" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Invoice No -->
+                <div>
+                    <label for="invoiceNo" class="block text-sm font-medium text-gray-700">Invoice No</label>
+                    <input type="text" id="invoiceNo" name="invoiceNo"
+                           class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                           placeholder="Enter Invoice No" required>
+                </div>
+
+                <!-- Client Name -->
+<!--                <div>-->
+<!--                    <label for="clientName" class="block text-sm font-medium text-gray-700">Client Name</label>-->
+<!--                    <input type="text" id="clientName" name="clientName"-->
+<!--                           class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"-->
+<!--                           placeholder="Enter Client Name" required>-->
+<!--                </div>-->
+
+                <!-- Client Name Dropdown -->
+                <div>
+                    <label for="clientId" class="block text-sm font-medium text-gray-700">Client Name</label>
+                    <select id="clientId" name="clientId"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                            required>
+                        <option value="" selected disabled>Loading clients...</option>
+                    </select>
+                </div>
+
+
+                <!-- Raised Date -->
+                <div>
+                    <label for="raisedDate" class="block text-sm font-medium text-gray-700">Raised Date</label>
+                    <input type="date" id="raisedDate" name="raisedDate"
+                           class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                           required>
+                </div>
+
+                <!-- Due Date -->
+                <div>
+                    <label for="dueDate" class="block text-sm font-medium text-gray-700">Due Date</label>
+                    <input type="date" id="dueDate" name="dueDate"
+                           class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                           required>
+                </div>
+
+                <!-- Total Amount -->
+                <div>
+                    <label for="totalAmount" class="block text-sm font-medium text-gray-700">Total Amount</label>
+                    <input type="number" id="totalAmount" name="totalAmount"
+                           class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                           placeholder="Enter Total Amount" required>
+                </div>
+
+                <!-- Month -->
+                <div>
+                    <label for="month" class="block text-sm font-medium text-gray-700">Month</label>
+                    <select id="month" name="month"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="" selected disabled>Select Month</option>
+                        <option value="January">January</option>
+                        <option value="February">February</option>
+                        <option value="March">March</option>
+                        <option value="April">April</option>
+                        <option value="May">May</option>
+                        <option value="June">June</option>
+                        <option value="July">July</option>
+                        <option value="August">August</option>
+                        <option value="September">September</option>
+                        <option value="October">October</option>
+                        <option value="November">November</option>
+                        <option value="December">December</option>
+
+                        <!-- Add remaining months -->
+                    </select>
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div>
+                <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                <select id="status" name="status"
+                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="Pending">Pending</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Semi-Paid">Semi-Paid</option>
+                </select>
+            </div>
+
+            <!-- Comments -->
+            <div>
+                <label for="comments" class="block text-sm font-medium text-gray-700">Comments</label>
+                <textarea id="comments" name="comments" rows="4"
+                          class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                          placeholder="Enter additional comments"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end">
+                <button type="submit"
+                        class="bg-indigo-600 text-white px-6 py-3 rounded-lg shadow hover:bg-indigo-500 transition">
+                    Create Invoice
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<footer id="footer"></footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Simulate content loading with a timeout
+        setTimeout(function() {
+            document.getElementById("spinner-container").style.display = "none";  // Hide spinner after loading
+        }, 1100); // Adjust the delay based on your requirements
+    });
+    fetch('navbar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar').innerHTML = data;
+        });
+
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+
+    document.addEventListener("DOMContentLoaded", function() {
+    // Fetch clients from the API and populate the dropdown
+    axios.get('http://3.6.108.76:8080/api/clients')
+        .then(response => {
+            const clientDropdown = document.getElementById('clientId');
+            const clients = response.data;
+
+            // Clear existing options
+            clientDropdown.innerHTML = '<option value="" disabled selected>Select a client</option>';
+
+
+            clients.forEach(client => {
+                const option = document.createElement('option');
+                option.value = client.id; // Send the client ID
+                option.textContent = client.clientName; // Display client name
+                clientDropdown.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching clients:', error);
+            Swal.fire('Error!', 'Failed to load clients. Please try again.', 'error');
+        });
+        });
+
+
+    // Handle form submission
+    document.getElementById('create-invoice-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Gather form data
+        const formData = new FormData(this);
+        const invoiceData = Object.fromEntries(formData.entries());
+
+        // Find the selected client name to include it
+        const selectedClient = document.querySelector(`#clientId option[value="${invoiceData.clientId}"]`);
+        if (selectedClient) {
+            invoiceData.clientName = selectedClient.textContent;
+        }
+        // Send POST request to backend
+<!--        axios.post('http://3.6.108.76:8080/api/invoices', invoiceData)-->
+<!--            .then(response => {-->
+<!--                Swal.fire(-->
+<!--                    'Success!',-->
+<!--                    'Invoice created successfully!',-->
+<!--                    'success'-->
+<!--                ).then(() => {-->
+<!--                    window.location.href = 'invoices_list.html'; // Redirect to Invoice List page-->
+<!--                });-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('Error creating invoice:', error);-->
+<!--                Swal.fire(-->
+<!--                    'Error!',-->
+<!--                    'There was an issue creating the invoice. Please try again.',-->
+<!--                    'error'-->
+<!--                );-->
+<!--            });-->
+
+                // Send POST request to backend
+axios.post('http://3.6.108.76:8080/api/invoices', invoiceData)
+    .then(response => {
+        Swal.fire(
+            'Success!',
+            'Invoice created successfully!',
+            'success'
+        ).then(() => {
+            window.location.href = 'invoices_list.html'; // Redirect to Invoice List page
+        });
+    })
+    .catch(error => {
+        console.log(error);
+        console.error('Error creating invoice:', error);
+
+        if (error.response && error.response.status === 409) {
+            // Handle duplicate invoice number error
+            console.log("I am inside conflict");
+            Swal.fire(
+
+                'Duplicate Invoice!',
+                error.response.data || 'An invoice with this number already exists. Please use a different number.',
+                'error'
+            );
+        } else {
+            // Handle other errors
+            Swal.fire(
+                'Error!',
+                'An invoice with this number already exists. Please use a different number.',
+                'error'
+            );
+        }
+    });
+
+    });
+</script>
+<script src="navbar.js"></script>
+</body>
+</html>

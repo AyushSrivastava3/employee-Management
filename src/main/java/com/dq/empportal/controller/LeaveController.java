@@ -36,25 +36,25 @@ public class LeaveController {
         return ResponseEntity.ok("Leave request submitted successfully and is pending approval.");
     }
 
-    @PostMapping("/approveLeave/{leaveId}")
-    public ResponseEntity<String> approveLeave(@PathVariable int leaveId) {
-        Leave leave = leaveRepository.findById(leaveId)
-                .orElseThrow(() -> new RuntimeException("Leave request not found"));
-
-        if (!"Pending".equals(leave.getStatus())) {
-            return ResponseEntity.badRequest().body("Leave request is not pending approval.");
-        }
-
-        leave.setStatus("Approved");
-
-        EmployeeClientInfo employeeClientInfo = leave.getEmployeeClientInfo();
-        employeeClientInfo.addApprovedLeave(leave);  // Add approved leave and recalculate leave days
-
-        employeeClientInfoRepository.save(employeeClientInfo);  // Save updated employee-client info
-        leaveRepository.save(leave);  // Save the leave with updated status
-
-        return ResponseEntity.ok("Leave request approved successfully.");
-    }
+//    @PostMapping("/approveLeave/{leaveId}")
+//    public ResponseEntity<String> approveLeave(@PathVariable int leaveId) {
+//        Leave leave = leaveRepository.findById(leaveId)
+//                .orElseThrow(() -> new RuntimeException("Leave request not found"));
+//
+//        if (!"Pending".equals(leave.getStatus())) {
+//            return ResponseEntity.badRequest().body("Leave request is not pending approval.");
+//        }
+//
+//        leave.setStatus("Approved");
+//
+//        EmployeeClientInfo employeeClientInfo = leave.getEmployeeClientInfo();
+//        employeeClientInfo.addApprovedLeave(leave);  // Add approved leave and recalculate leave days
+//
+//        employeeClientInfoRepository.save(employeeClientInfo);  // Save updated employee-client info
+//        leaveRepository.save(leave);  // Save the leave with updated status
+//
+//        return ResponseEntity.ok("Leave request approved successfully.");
+//    }
 
 
     @PostMapping("/rejectLeave/{leaveId}")

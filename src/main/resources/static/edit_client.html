@@ -87,17 +87,30 @@
                 <label for="ifscCode" class="block text-lg font-medium text-gray-700">IFSC Code</label>
                 <input type="text" id="ifscCode" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
             </div>
+<!--            <div>-->
+<!--                <label for="currency" class="block text-lg font-medium text-gray-700">Currency</label>-->
+<!--                <input type="text" id="currency" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">-->
+<!--            </div>-->
             <div>
                 <label for="currency" class="block text-lg font-medium text-gray-700">Currency</label>
-                <input type="text" id="currency" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+                <select id="currency" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md" required>
+                    <option value="USD">USD</option>
+                    <option value="Rs">Rs</option>
+                </select>
             </div>
             <div>
                 <label for="location" class="block text-lg font-medium text-gray-700">Location</label>
                 <input type="text" id="location" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
             </div>
+<!--            <div>-->
+<!--                <label for="timeline" class="block text-lg font-medium text-gray-700">Timeline</label>-->
+<!--                <input type="text" id="timeline" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">-->
+<!--            </div>-->
             <div>
-                <label for="timeline" class="block text-lg font-medium text-gray-700">Timeline</label>
-                <input type="text" id="timeline" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+                <label for="timeline" class="block text-lg font-medium text-gray-700">Payment Terms</label>
+                <select id="timeline" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md">
+                    <!-- Options will be dynamically added -->
+                </select>
             </div>
             <div>
                 <label for="miscellaneous" class="block text-lg font-medium text-gray-700">Miscellaneous</label>
@@ -241,6 +254,16 @@
                 text: 'Failed to load client details. Please try again later.'
             });
         }
+    }
+
+    const timelineDropdown = document.getElementById("timeline");
+
+    // Populate dropdown with days from 30 to 90
+    for (let day = 30; day <= 90; day++) {
+        const option = document.createElement("option");
+        option.value = day;
+        option.textContent = `${day} Days`;
+        timelineDropdown.appendChild(option);
     }
 
     // Function to populate form fields with fetched client data

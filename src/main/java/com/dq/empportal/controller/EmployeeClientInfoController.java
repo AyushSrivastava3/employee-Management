@@ -62,7 +62,8 @@ public class EmployeeClientInfoController {
                 infoId,
                 request.getLeaveDays(),
                 request.getHolidays(),
-                request.getNonBillableDays());
+                request.getNonBillableDays(),
+                request.getWeekendDays());
         return ResponseEntity.ok(updatedInfo);
     }
 

@@ -83,7 +83,7 @@ public class EmployeeClientService {
 //        return employeeClientInfoRepository.save(info);
 //    }
 
-    public EmployeeClientInfo updateDays(Integer infoId, List<LocalDate> leaveDays, List<LocalDate> holidays, List<LocalDate> nonBillableDays) {
+    public EmployeeClientInfo updateDays(Integer infoId, List<LocalDate> leaveDays, List<LocalDate> holidays, List<LocalDate> nonBillableDays,List<LocalDate> weekendDays) {
         EmployeeClientInfo info = employeeClientInfoRepository.findById(infoId)
                 .orElseThrow(() -> new EntityNotFoundException("EmployeeClientInfo not found"));
 
@@ -109,6 +109,14 @@ public class EmployeeClientService {
             Set<LocalDate> updatedNonBillableDays = new HashSet<>(existingNonBillableDays);
             updatedNonBillableDays.addAll(nonBillableDays);
             info.setNonBillableDays(new ArrayList<>(updatedNonBillableDays));
+        }
+
+        // Append new WeekendDays, if provided
+        if (weekendDays != null && !weekendDays.isEmpty()) {
+            List<LocalDate> existingWeekendDays = info.getWeekendDays();
+            Set<LocalDate> updatedWeekendDays = new HashSet<>(existingWeekendDays);
+            updatedWeekendDays.addAll(weekendDays);
+            info.setWeekendDays(new ArrayList<>(updatedWeekendDays));
         }
 
         return employeeClientInfoRepository.save(info);
@@ -198,6 +206,10 @@ public List<EmployeeClientInfoDTO> getEmployeesForClientInMonth(Integer clientId
 
                 // Filter nonBillableDays for the specified month
                 info.getNonBillableDays().stream()
+                        .filter(date -> !date.isBefore(startDate) && !date.isAfter(endDate))
+                        .collect(Collectors.toList()),
+
+                info.getWeekendDays().stream()
                         .filter(date -> !date.isBefore(startDate) && !date.isAfter(endDate))
                         .collect(Collectors.toList())
         );

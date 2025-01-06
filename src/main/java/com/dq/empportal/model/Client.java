@@ -22,6 +22,8 @@ public class Client {
     private Integer id;
     private String clientName;
     private String clientAddress;
+    private String clientCountry;
+    private String state;
     private String gstNumber;
     private String accountNumber;
     private String ifscCode;

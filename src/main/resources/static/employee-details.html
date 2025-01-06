@@ -186,6 +186,7 @@
             const response = await fetch(`http://3.6.108.76:8080/employees/${employeeId}`);
             if (!response.ok) throw new Error('Employee not found');
             const employee = await response.json();
+            console.log("employee data:",employee);
 
             // Populate all fields
             document.getElementById('firstName').value = employee.firstName || '';
@@ -209,7 +210,7 @@
             document.getElementById('employeeGrade').value = employee.employeeGrade || '';
             document.getElementById('dateOfJoining').value = employee.dateOfJoining || '';
             document.getElementById('dateOfResigning').value = employee.dateOfResigning || '';
-            document.getElementById('salaryPerAnnum').value = employee.salaryPerAnnum || '';
+            document.getElementById('salaryPerAnnum').value = employee.payroll || '';
             document.getElementById('payroll').value = employee.payroll || '';
             document.getElementById('bankAccountDetails').value = employee.bankAccountDetails || '';
             document.getElementById('payDate').value = employee.payDate || '';

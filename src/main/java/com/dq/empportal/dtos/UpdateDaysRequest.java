@@ -7,6 +7,17 @@ public class UpdateDaysRequest {
     private List<LocalDate> leaveDays;
     private List<LocalDate> holidays;
     private List<LocalDate> nonBillableDays;
+    private List<LocalDate> weekendDays;
+
+    public List<LocalDate> getWeekendDays() {
+        return weekendDays;
+    }
+
+    public void setWeekendDays(List<LocalDate> weekendDays) {
+        this.weekendDays = weekendDays;
+    }
+
+
 
     // Getters and Setters
     public List<LocalDate> getLeaveDays() {

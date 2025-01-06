@@ -106,11 +106,24 @@
                 </div>
                 <div>
                     <label for="gender" class="block">Gender</label>
-                    <input type="text" id="gender" class="w-full p-2 border rounded">
+                    <select id="gender" class="w-full p-2 border rounded">
+                        <option value="">Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
                 <div>
                     <label for="homeAddress" class="block">Home Address</label>
                     <input type="text" id="homeAddress" class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label for="aadharNumber" class="block">Aadhar Number</label>
+                    <input type="text" id="aadharNumber" class="w-full p-2 border rounded" required>
+                </div>
+                <div>
+                    <label for="panNumber" class="block">PAN Number</label>
+                    <input type="text" id="panNumber" class="w-full p-2 border rounded" required>
                 </div>
             </div>
         </div>
@@ -340,7 +353,8 @@
   leavesTakenThisMonth: document.getElementById('leavesTakenThisMonth') ? document.getElementById('leavesTakenThisMonth').value : '',
   salaryPerAnnum: document.getElementById('salaryPerAnnum') ? document.getElementById('salaryPerAnnum').value : '',
   dateOfBirth: document.getElementById('dateOfBirth') ? document.getElementById('dateOfBirth').value : '',
-  gender: document.querySelector('input[name="gender"]:checked') ? document.querySelector('input[name="gender"]:checked').value : '',
+<!--  gender: document.querySelector('input[name="gender"]:checked') ? document.querySelector('input[name="gender"]:checked').value : '',-->
+    gender: document.querySelector('#gender').value || '',
   homeAddress: document.getElementById('homeAddress') ? document.getElementById('homeAddress').value : '',
   aadharNumber: document.getElementById('aadharNumber') ? document.getElementById('aadharNumber').value : '',
   panNumber: document.getElementById('panNumber') ? document.getElementById('panNumber').value : '',

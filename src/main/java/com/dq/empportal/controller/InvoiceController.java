@@ -1,30 +1,39 @@
 package com.dq.empportal.controller;
-
-
+import com.dq.empportal.dtos.InvoiceDto;
+import com.dq.empportal.dtos.InvoiceUpdateRequest;
+import com.dq.empportal.exception.DuplicateInvoiceException;
 import com.dq.empportal.model.Client;
 import com.dq.empportal.model.Invoice;
 import com.dq.empportal.repository.ClientRepository;
 import com.dq.empportal.repository.InvoiceRepository;
 import com.dq.empportal.service.InvoiceService;
 import com.dq.empportal.transform.InvoiceToInvoiceResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/invoices")
 public class InvoiceController {
 
+    private static final Logger log = LoggerFactory.getLogger(InvoiceController.class);
     @Autowired
     private InvoiceRepository invoiceRepository;
 
@@ -34,6 +43,7 @@ public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;
 
+
     @Autowired
     InvoiceToInvoiceResponse invoiceToInvoiceResponse;
 
@@ -41,219 +51,6 @@ public class InvoiceController {
     public List<Client> getAllClients() {
         return clientRepository.findAll();
     }
-
-//    @PostMapping("/create")
-//    public ResponseEntity<Invoice> createInvoice(@RequestBody Invoice invoice) {
-//        invoice.setCreatedDate(LocalDate.now());
-//        Invoice savedInvoice = invoiceRepository.save(invoice);
-//        return ResponseEntity.ok(savedInvoice);
-//    }
-//
-//    @GetMapping("/all")
-//    public List<Invoice> getAllInvoices() {
-//        return invoiceRepository.findAll();
-//    }
-//
-//    @GetMapping("/byYear")
-//    public List<Invoice> getInvoicesByYear(@RequestParam int year) {
-//        return invoiceService.getInvoicesByYear(year);
-//    }
-//
-//    @GetMapping("/byMonth")
-//    public List<Invoice> getInvoicesByMonth(@RequestParam int year, @RequestParam int month) {
-//        return invoiceService.getInvoicesByMonth(year, month);
-//    }
-//
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Invoice> getInvoiceById(@PathVariable Integer id) {
-//        Optional<Invoice> invoice = invoiceRepository.findById(id);
-//        return invoice.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-//    }
-//
-//    // New endpoint to update a specific invoice by its ID
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Invoice> updateInvoice(@PathVariable Integer id, @RequestBody Invoice invoiceDetails) {
-//        Optional<Invoice> optionalInvoice = invoiceRepository.findById(id);
-//
-//        if (optionalInvoice.isPresent()) {
-//            Invoice invoice = optionalInvoice.get();
-//            invoice.setInvoiceNumber(invoiceDetails.getInvoiceNumber());
-//            invoice.setClientName(invoiceDetails.getClientName());
-//            invoice.setInvoiceValue(invoiceDetails.getInvoiceValue());
-//            invoice.setCurrency(invoiceDetails.getCurrency());
-//            invoice.setMonth(invoiceDetails.getMonth());
-//            invoice.setRaisedOn(invoiceDetails.getRaisedOn());
-//            invoice.setTimeline(invoiceDetails.getTimeline());
-//            Invoice updatedInvoice = invoiceRepository.save(invoice);
-//            return ResponseEntity.ok(updatedInvoice);
-//        }else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteInvoice(@PathVariable Integer id){
-//        invoiceService.deleteInvocieById(id);
-//        return ResponseEntity.noContent().build();
-//    }
-//
-//
-//
-//    @GetMapping("/pending")
-//    public ResponseEntity<List<Invoice>> getPendingInvoices() {
-//        List<Invoice> invoices = invoiceService.getPendingInvoices();
-//
-//        if (invoices.isEmpty()) {
-//            return ResponseEntity.noContent().build();
-//        } else {
-//            return ResponseEntity.ok(invoices);
-//        }
-//    }
-//
-//    @GetMapping("/pending/clientInvoices")
-//    public ResponseEntity<List<Invoice>> getPendingClientInvoices(@RequestParam String clientId) {
-//        List<Invoice> invoices = invoiceService.getPendingInvoicesByClientId(clientId);
-//        return ResponseEntity.ok(invoices);
-//    }
-//
-//    @GetMapping("/export/invoices")
-//    public ResponseEntity<byte[]> exportInvoicesToExcel() {
-//        try {
-//            List<Invoice> invoices = invoiceRepository.findAll();
-//            ExportImportService<Invoice> exporter = new ExportImportService<>();
-//
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            exporter.exportToExcel(invoices, baos);
-//
-//            byte[] excelBytes = baos.toByteArray();
-//            System.out.println("Excel file size: " + excelBytes.length);
-//
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=clients_export.xlsx");
-//            headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-//
-//            return new ResponseEntity<>(excelBytes, headers, HttpStatus.OK);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return new ResponseEntity<>(("Failed to create Excel file: " + e.getMessage()).getBytes(), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-//
-//    @PostMapping("/import/invoices")
-//    public ResponseEntity<?> importInvoicesFromCSV(@RequestParam("file") MultipartFile file) {
-//        try {
-//            ExportImportService<Invoice> importer = new ExportImportService<>();
-//            List<Invoice> invoices = importer.importFromCSV(file, Invoice.class);
-//            invoiceRepository.saveAll(invoices);
-//            return ResponseEntity.ok(invoices);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Map<String, String> errorResponse = new HashMap<>();
-//            errorResponse.put("message", "Failed to import CSV file: " + e.getMessage());
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .contentType(MediaType.APPLICATION_JSON)
-//                    .body(errorResponse);
-//        }
-//    }
-//
-//    @GetMapping("/getTodayInvoices")
-//    public List<Invoice> getTodayInvoices() {
-//        return invoiceService.getInvoiceCreatedToday();
-//    }
-//    @GetMapping("/getWeekInvoices")
-//    public List<Invoice> getWeekInvoices() {
-//        return invoiceService.getInvoiceCreatedInWeek();
-//    }
-//
-//
-//    @GetMapping("/byClient")
-//    public ResponseEntity<List<Invoice>> getInvoicesByClientId(@RequestParam Integer clientId){
-//        List<Invoice> invoices= invoiceService.getInvoicesByClientId(clientId);
-//        if(invoices.isEmpty()){
-//            return ResponseEntity.noContent().build();
-//        }else {
-//            return ResponseEntity.ok(invoices);
-//        }
-//    }
-//
-//
-//    @GetMapping("/clients/invoices/export")
-//    public ResponseEntity<byte[]> exportClientInvoicesToExcel(@RequestParam Integer clientId) {
-//        try {
-//            List<Invoice> invoices= invoiceService.getInvoicesByClientId(clientId);
-//            ExportImportService<Invoice> exporter = new ExportImportService<>();
-//
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            exporter.exportToExcel(invoices, baos);
-//
-//            byte[] excelBytes = baos.toByteArray();
-//            System.out.println("Excel file size: " + excelBytes.length);
-//
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=profiles_export.xlsx");
-//            headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-//
-//            return new ResponseEntity<>(excelBytes, headers, HttpStatus.OK);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return new ResponseEntity<>(("Failed to create Excel file: " + e.getMessage()).getBytes(), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-//
-//    @GetMapping("/pending/clientInvoices/export")
-//    public ResponseEntity<byte[]> exportPendingInvoicesToExcel(@RequestParam String clientId) {
-//        try {
-//            List<Invoice> invoices = invoiceService.getPendingInvoicesByClientId(clientId);
-//            ExportImportService<Invoice> exporter = new ExportImportService<>();
-//
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            exporter.exportToExcel(invoices, baos);
-//
-//            byte[] excelBytes = baos.toByteArray();
-//            System.out.println("Excel file size: " + excelBytes.length);
-//
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=profiles_export.xlsx");
-//            headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-//
-//            return new ResponseEntity<>(excelBytes, headers, HttpStatus.OK);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return new ResponseEntity<>(("Failed to create Excel file: " + e.getMessage()).getBytes(), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-
-
-
-//    @PostMapping("/generate")
-//    public InvoiceResponseDto generateMonthlyInvoice(@RequestParam Integer clientId) {
-//        return invoiceToInvoiceResponse.transform(invoiceService.generateMonthlyInvoice(clientId));
-//    }
-
-//    @PostMapping("/generate")
-//    public ResponseEntity<ByteArrayResource> generateMonthlyInvoice(@RequestParam Integer clientId) {
-//        // Fetch and generate the invoice
-//        Invoice invoice = invoiceService.generateMonthlyInvoice(clientId);
-//
-//        // Generate the PDF stream (from your existing method)
-//        ByteArrayInputStream pdfStream = invoiceService.generateInvoicePdf(invoice, invoice.getEmployeeClientInfos());
-//
-//        // Convert the ByteArrayInputStream to a ByteArrayResource
-//        ByteArrayResource pdfResource = new ByteArrayResource(pdfStream.readAllBytes());
-//
-//        // Set HTTP headers for file download
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoice_" + clientId + "_" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM")) + ".pdf");
-//
-//        // Return PDF file as a ResponseEntity
-//        return ResponseEntity.ok()
-//                .headers(headers)
-//                .contentType(MediaType.APPLICATION_PDF)
-//                .body(pdfResource);
-//    }
-
-
-
 
     @PostMapping("/generate")
     public ResponseEntity<ByteArrayResource> generateMonthlyInvoice(
@@ -293,6 +90,145 @@ public class InvoiceController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdfResource);
     }
+
+    @PutMapping("/{invoiceId}")
+    @Transactional
+    public ResponseEntity<Invoice> editInvoice(@PathVariable Integer invoiceId, @RequestBody InvoiceUpdateRequest invoiceUpdateRequest) {
+        // Find the invoice by ID
+        log.info("InvoiceUpdateRequest",invoiceUpdateRequest.getInvoiceNo(),invoiceUpdateRequest.getTotalAmount());
+        Invoice invoice = invoiceRepository.findById(invoiceId)
+                .orElseThrow(() -> new RuntimeException("Invoice not found"));
+
+        // Update the fields if they are provided
+        if (invoiceUpdateRequest.getStatus() != null) {
+            invoice.setStatus(invoiceUpdateRequest.getStatus());
+        }
+        if (invoiceUpdateRequest.getComments() != null) {
+            invoice.setComments(invoiceUpdateRequest.getComments());
+        }
+        if (invoiceUpdateRequest.getTransactionId() != null) {
+            invoice.setTransactionId(invoiceUpdateRequest.getTransactionId());
+        }
+        if (invoiceUpdateRequest.getRaisedDate() != null) {
+            invoice.setRaisedDate(invoiceUpdateRequest.getRaisedDate());
+        }
+        if (invoiceUpdateRequest.getDueDate() != null) {
+            invoice.setDueDate(invoiceUpdateRequest.getDueDate());
+        }
+        if (invoiceUpdateRequest.getTotalAmount() != null) {
+            invoice.setTotalAmount(invoiceUpdateRequest.getTotalAmount());
+        }
+        if (invoiceUpdateRequest.getInInr() != null) {
+            invoice.setInInr(invoiceUpdateRequest.getInInr());
+        }
+        if (invoiceUpdateRequest.getMonth() != null) {
+            invoice.setMonth(invoiceUpdateRequest.getMonth());
+        }
+        if (invoiceUpdateRequest.getInvoiceNo()!=null){
+            invoice.setInvoiceNo(invoiceUpdateRequest.getInvoiceNo());
+        }
+
+
+        // Save the updated invoice
+        Invoice updatedInvoice = invoiceRepository.save(invoice);
+
+        return ResponseEntity.ok(updatedInvoice);
+    }
+
+
+    @GetMapping
+    public ResponseEntity<List<InvoiceDto>> getAllInvoices() {
+        List<Invoice> invoices = invoiceRepository.findAll(); // Fetch all invoices
+        List<InvoiceDto> invoiceDtos = InvoiceService.toInvoiceDtoList(invoices); // Convert entities to DTOs
+        return ResponseEntity.ok(invoiceDtos);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createInvoice(@RequestBody InvoiceDto invoiceDto) {
+        // Convert InvoiceDto to Invoice entity
+        // Check for duplicate invoice number
+        if (invoiceRepository.existsByInvoiceNo(invoiceDto.getInvoiceNo())) {
+            throw new DuplicateInvoiceException("Invoice number already exists: " + invoiceDto.getInvoiceNo());
+        }
+        Invoice invoice = new Invoice();
+        Client client=clientRepository.findById(invoiceDto.getClientId()).get();
+        invoice.setClient(clientRepository.findById(invoiceDto.getClientId())
+                .orElseThrow(() -> new RuntimeException("Client not found")));
+        invoice.setRaisedDate(invoiceDto.getRaisedDate());
+        invoice.setMonth(invoiceDto.getMonth());
+        invoice.setTotalAmount(invoiceDto.getTotalAmount());
+        invoice.setInvoiceNo(invoiceDto.getInvoiceNo());
+        invoice.setDueDate(invoiceDto.getDueDate());
+        invoice.setStatus(invoiceDto.getStatus());
+        invoice.setComments(invoiceDto.getComments());
+        invoice.setCurrency(client.getCurrency());
+//        String valueInInr= String.valueOf(invoiceDto.getTotalAmount()*81);
+//        if (client.getCurrency().equals("USD")){
+//            invoice.setInInr("Rs"+" "+valueInInr);
+//        }
+//        else {
+//            invoice.setInInr("Rs"+" "+invoiceDto.getTotalAmount());
+//        }
+
+        try {
+            BigDecimal totalAmount = new BigDecimal(invoiceDto.getTotalAmount());
+            BigDecimal exchangeRate = BigDecimal.valueOf(81);
+            String valueInInr = "Rs " + totalAmount.multiply(exchangeRate).toPlainString();
+
+            if (client.getCurrency().equals("USD")) {
+                invoice.setInInr(valueInInr);
+            } else {
+                invoice.setInInr("Rs " + invoiceDto.getTotalAmount());
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid total amount: " + invoiceDto.getTotalAmount(), e);
+        }
+
+
+        // Save the invoice
+        Invoice savedInvoice = invoiceRepository.save(invoice);
+
+        // Convert saved Invoice to InvoiceDto
+        InvoiceDto responseDto = convertToDto(savedInvoice);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteInvoice(@PathVariable Integer id){
+        invoiceRepository.deleteById(id);
+        return ResponseEntity.ok("Invoice deleted successfully");
+    }
+
+    private InvoiceDto convertToDto(Invoice invoice) {
+        InvoiceDto dto = new InvoiceDto();
+        dto.setId(invoice.getId());
+        dto.setClientId(invoice.getClient().getId());
+        dto.setClientName(invoice.getClient().getClientName());
+        dto.setRaisedDate(invoice.getRaisedDate());
+        dto.setMonth(invoice.getMonth());
+        dto.setTotalAmount(invoice.getClient().getCurrency()+" "+invoice.getTotalAmount());
+        dto.setInvoiceNo(invoice.getInvoiceNo());
+        dto.setDueDate(invoice.getDueDate());
+        dto.setStatus(invoice.getStatus());
+        dto.setComments(invoice.getComments());
+        dto.setInInr(invoice.getInInr());
+        return dto;
+    }
+
+    @GetMapping("/status-count")
+    public ResponseEntity<Map<String, Long>> getInvoiceStatusCounts() {
+        Map<String, Long> statusCounts = invoiceService.getInvoiceStatusCounts();
+        return ResponseEntity.ok(statusCounts);
+    }
+
+    @GetMapping("/invoices/total-amounts")
+    public ResponseEntity<Map<String, Double>> getTotalAmounts() {
+        Map<String, Double> amounts = invoiceService.getTotalAmounts();
+        return ResponseEntity.ok(amounts);
+    }
+
 
 
 
